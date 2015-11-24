@@ -7,9 +7,16 @@
 //
 
 #include <stdio.h>
+#include "board.h"
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    printf("Hello, World!\n");
+
+    board B = empty_board();
+
+    set(B, 0, 0, 1);
+    set(B, 0, 2, 2);
+
+    print_board(B);
+
     return 0;
 }
