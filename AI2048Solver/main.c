@@ -11,10 +11,10 @@
 
 int main(int argc, const char * argv[]) {
 
-    board B = empty_board();
+    Board b = empty_board();
 
-    set(B, 0, 0, 1);
-    set(B, 0, 2, 2);
+    set(b, 0, 0, 1);
+    set(b, 0, 2, 2);
 
     print_board(B);
 

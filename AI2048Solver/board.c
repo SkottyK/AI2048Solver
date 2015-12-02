@@ -21,23 +21,23 @@ struct board_data {
 /**********************************************************
  *   Initialization
  **********************************************************/
-board empty_board() {
-    board B = (board)calloc(1, sizeof(struct board_data));
-    if (B == NULL) {
+Board empty_board() {
+    Board b = (Board)calloc(1, sizeof(struct board_data));
+    if (b == NULL) {
         fprintf(stderr, "Malloc failed to allocate board\n");
         exit(1);
     }
-    return B;
+    return b;
 }
 
 /**********************************************************
  *   Accessors + Mutators
  **********************************************************/
-int get(board B, int row, int col) {
-    return B->data[row][col];
+int get(Board b, int row, int col) {
+    return b->data[row][col];
 }
-void set(board B, int row, int col, int val) {
-    B->data[row][col] = val;
+void set(Board b, int row, int col, int val) {
+    b->data[row][col] = val;
 }
 
 
@@ -51,12 +51,12 @@ void print_horizontal() {
     }
     printf("\n");
 }
-void print_board(board B) {
+void print_board(Board b) {
     print_horizontal();
     for (int r=0; r < N; r++) {
         printf("|");
         for (int c=0; c < N; c++) {
-            int val = get(B, r,c);
+            int val = get(b, r,c);
             for (int i=0; i < NUMCHARS - num_digits(val); i++)
                 printf(" "); // Right-justify numbers
             printf("%d", val);
