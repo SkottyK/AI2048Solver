@@ -86,15 +86,41 @@ PointList open_spaces(Board b) {
 }
 
 
-int is_valid_move(Board b, Move m) {
-    return 1;
+int is_effectual_move(Board b, Move m) {
+    Board tmp = rotate_for_move(b, m);
+    int this, i;
+    int data[BOARDSIZE];
+    for (int r=0; r<BOARDSIZE; r++) {
+        i = 0;
+        memset(data, 0, sizeof(int)*BOARDSIZE);
+        for (int c=BOARDSIZE-1; c >= 0; c--) {
+            this = bget(tmp, r, c);
+            if (this != 0) {
+                if (data[i] == 0) {
+                    data[i] = this;
+                } else if (this == data[i]) {
+                    data[i] += this;
+                    i++;
+                } else {
+                    i++;
+                    data[i] = this;
+                }
+            }
+        }
+        for (int c=0; c<BOARDSIZE; c++) {
+            if (bget(tmp, r, c) != data[BOARDSIZE-1-c])
+                return 1;
+        }
+    }
+    free_board(tmp);
+    return 0;
 }
 
-Move *valid_moves(Board b, int *size) {
+Move *effectual_moves(Board b, int *size) {
     int cnt = 0;
     Move *moves = calloc(NUM_MOVES, sizeof(Move));
     for (int m=Up; m<=Right; m++) {
-        if (is_valid_move(b, m)) {
+        if (is_effectual_move(b, m)) {
             moves[cnt] = m;
             cnt++;
         }
