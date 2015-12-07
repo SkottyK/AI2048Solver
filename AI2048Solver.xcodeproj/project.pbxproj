@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D2008E3C1C0E7F0D008CC0B7 /* game.c in Sources */ = {isa = PBXBuildFile; fileRef = D2008E3A1C0E7F0D008CC0B7 /* game.c */; };
 		D222902C1C04D606000EE872 /* 2048.c in Sources */ = {isa = PBXBuildFile; fileRef = D222902A1C04D606000EE872 /* 2048.c */; };
+		D2E4E3F01C15167D00CF4A2A /* point.c in Sources */ = {isa = PBXBuildFile; fileRef = D2E4E3EE1C15167D00CF4A2A /* point.c */; };
 		D2F16A8B1C0161BB00F1D41C /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D2F16A8A1C0161BB00F1D41C /* main.c */; };
 		D2F16A941C0162B400F1D41C /* board.c in Sources */ = {isa = PBXBuildFile; fileRef = D2F16A921C0162B400F1D41C /* board.c */; };
 		D2F16A971C01631200F1D41C /* num_util.c in Sources */ = {isa = PBXBuildFile; fileRef = D2F16A951C01631200F1D41C /* num_util.c */; };
@@ -31,6 +32,8 @@
 		D2008E3B1C0E7F0D008CC0B7 /* game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = game.h; sourceTree = "<group>"; };
 		D222902A1C04D606000EE872 /* 2048.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = 2048.c; sourceTree = "<group>"; };
 		D222902B1C04D606000EE872 /* 2048.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = 2048.h; sourceTree = "<group>"; };
+		D2E4E3EE1C15167D00CF4A2A /* point.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = point.c; sourceTree = "<group>"; };
+		D2E4E3EF1C15167D00CF4A2A /* point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = point.h; sourceTree = "<group>"; };
 		D2F16A871C0161BB00F1D41C /* AI2048Solver */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AI2048Solver; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2F16A8A1C0161BB00F1D41C /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		D2F16A921C0162B400F1D41C /* board.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = board.c; sourceTree = "<group>"; };
@@ -77,6 +80,8 @@
 				D222902B1C04D606000EE872 /* 2048.h */,
 				D2008E3A1C0E7F0D008CC0B7 /* game.c */,
 				D2008E3B1C0E7F0D008CC0B7 /* game.h */,
+				D2E4E3EE1C15167D00CF4A2A /* point.c */,
+				D2E4E3EF1C15167D00CF4A2A /* point.h */,
 			);
 			path = AI2048Solver;
 			sourceTree = "<group>";
@@ -146,6 +151,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2E4E3F01C15167D00CF4A2A /* point.c in Sources */,
 				D2008E3C1C0E7F0D008CC0B7 /* game.c in Sources */,
 				D2F16A941C0162B400F1D41C /* board.c in Sources */,
 				D222902C1C04D606000EE872 /* 2048.c in Sources */,
