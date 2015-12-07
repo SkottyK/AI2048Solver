@@ -13,5 +13,6 @@
 #include "game.h"
 
 int sum_heuristic(Board b);
+int squaresum_heuristic(Board b);
 
 #endif /* heuristics_h */
