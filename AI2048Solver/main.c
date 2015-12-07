@@ -193,6 +193,27 @@ int test_shift() {
     return 0;
 }
 
+int test_copy() {
+    printf("Testing copy...\n");
+    Board og = board_from_arr((int[4][4]){
+        {2,3,4,5},
+        {1,2,45,6},
+        {10,-8,4,16},
+        {34,6,8,25}
+    });
+    Board b1 = board_cpy(og);
+    for (int r=0; r<BOARDSIZE; r++) {
+        for (int c=0; c<BOARDSIZE; c++) {
+            if (bget(og,r,c) != bget(b1,r,c))
+                printf("(%d,%d)\n", r,c);
+            assert(bget(og,r,c) == bget(b1,r,c));
+        }
+    }
+    free(og);
+    free(b1);
+    return 0;
+}
+
 
 int main(int argc, const char * argv[]) {
 
@@ -200,8 +221,9 @@ int main(int argc, const char * argv[]) {
     test_rotate();
 
     test_shift();
-    */
 
+    test_copy();
+    */
     human_game();
 
     return 0;
