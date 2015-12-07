@@ -12,6 +12,7 @@
 		D2E4E3F01C15167D00CF4A2A /* point.c in Sources */ = {isa = PBXBuildFile; fileRef = D2E4E3EE1C15167D00CF4A2A /* point.c */; };
 		D2E4E3F31C1520E400CF4A2A /* list.c in Sources */ = {isa = PBXBuildFile; fileRef = D2E4E3F11C1520E400CF4A2A /* list.c */; };
 		D2E4E3F61C15216400CF4A2A /* move.c in Sources */ = {isa = PBXBuildFile; fileRef = D2E4E3F41C15216400CF4A2A /* move.c */; };
+		D2E4E3F91C15557A00CF4A2A /* heuristics.c in Sources */ = {isa = PBXBuildFile; fileRef = D2E4E3F71C15557A00CF4A2A /* heuristics.c */; };
 		D2F16A8B1C0161BB00F1D41C /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D2F16A8A1C0161BB00F1D41C /* main.c */; };
 		D2F16A941C0162B400F1D41C /* board.c in Sources */ = {isa = PBXBuildFile; fileRef = D2F16A921C0162B400F1D41C /* board.c */; };
 		D2F16A971C01631200F1D41C /* num_util.c in Sources */ = {isa = PBXBuildFile; fileRef = D2F16A951C01631200F1D41C /* num_util.c */; };
@@ -40,6 +41,8 @@
 		D2E4E3F21C1520E400CF4A2A /* list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = list.h; path = Util/list.h; sourceTree = "<group>"; };
 		D2E4E3F41C15216400CF4A2A /* move.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = move.c; sourceTree = "<group>"; };
 		D2E4E3F51C15216400CF4A2A /* move.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = move.h; sourceTree = "<group>"; };
+		D2E4E3F71C15557A00CF4A2A /* heuristics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = heuristics.c; sourceTree = "<group>"; };
+		D2E4E3F81C15557A00CF4A2A /* heuristics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = heuristics.h; sourceTree = "<group>"; };
 		D2F16A871C0161BB00F1D41C /* AI2048Solver */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AI2048Solver; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2F16A8A1C0161BB00F1D41C /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		D2F16A921C0162B400F1D41C /* board.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = board.c; sourceTree = "<group>"; };
@@ -90,6 +93,8 @@
 				D2E4E3EF1C15167D00CF4A2A /* point.h */,
 				D2E4E3F41C15216400CF4A2A /* move.c */,
 				D2E4E3F51C15216400CF4A2A /* move.h */,
+				D2E4E3F71C15557A00CF4A2A /* heuristics.c */,
+				D2E4E3F81C15557A00CF4A2A /* heuristics.h */,
 			);
 			path = AI2048Solver;
 			sourceTree = "<group>";
@@ -169,6 +174,7 @@
 				D2F16A971C01631200F1D41C /* num_util.c in Sources */,
 				D2E4E3F61C15216400CF4A2A /* move.c in Sources */,
 				D2F16A8B1C0161BB00F1D41C /* main.c in Sources */,
+				D2E4E3F91C15557A00CF4A2A /* heuristics.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
