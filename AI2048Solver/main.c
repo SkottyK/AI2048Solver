@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "2048.h"
 #include "board.h"
 #include "point.h"
 #include "game.h"

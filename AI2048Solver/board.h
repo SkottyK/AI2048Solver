@@ -10,7 +10,8 @@
 #define board_h
 
 #include <stdio.h>
-#include "2048.h"
+#include "move.h"
+#include "point.h"
 
 #define BOARDSIZE 4
 

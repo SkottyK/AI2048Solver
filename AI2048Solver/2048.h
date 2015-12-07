@@ -10,8 +10,8 @@
 #define _048_h
 
 #include <stdio.h>
-#include "point.h"
-#include "move.h"
 
+/* Play game on command line */
+void human_game();
 
 #endif /* _048_h */
