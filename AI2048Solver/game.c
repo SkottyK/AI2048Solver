@@ -7,12 +7,15 @@
 //
 
 #include <stdlib.h>
+#include <time.h>
 #include <string.h>
+#include "heuristics.h"
 #include "game.h"
 
 #define MAXLINE 400
 
 Game init_game(Heuristic h) {
+    srand((unsigned)time(NULL));
     Game g = (Game)malloc(sizeof(struct game_data));
 
     Board b = empty_board();
@@ -29,6 +32,11 @@ void print_game(Game g) {
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n");
     printf("Score: %d\n", g->score);
     print_board(g->board);
+    printf("Heuristic:\n");
+    printf("     Up: %d\n", test_move(g, Up));
+    printf("   Down: %d\n", test_move(g, Down));
+    printf("   Left: %d\n", test_move(g, Left));
+    printf("  Right: %d\n", test_move(g, Right));
 }
 
 void make_move(Game g, Move m) {
@@ -36,6 +44,17 @@ void make_move(Game g, Move m) {
         g->score += shift(g->board, m);
         place_rand(g->board);
     }
+}
+
+int test_move(Game g, Move m) {
+    if (is_effectual_move(g->board, m)) {
+        Board b = board_cpy(g->board);
+        shift(b, m);
+        int hval = g->h(b);
+        free(b);
+        return hval;
+    }
+    return -1;
 }
 
 void print_commands() {
@@ -55,7 +74,7 @@ void human_game() {
 
 
     //char buf[MAXLINE];
-    Game g = init_game(NULL);
+    Game g = init_game(sum_heuristic);
     print_game(g);
 
     char in;

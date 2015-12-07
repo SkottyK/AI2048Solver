@@ -21,7 +21,9 @@ typedef struct game_data {
 } *Game;
 
 Game init_game(Heuristic h);
+
 void make_move(Game g, Move m);
+int test_move(Game g, Move m);
 
 /* Play game on command line */
 void human_game();
