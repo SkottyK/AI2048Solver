@@ -27,7 +27,7 @@ int bget(Board b, int row, int col);
 
 PointList open_spaces(Board b);
 Move *effectual_moves(Board b, int *size);
-void shift(Board b, Move m);
+int shift(Board b, Move m);
 
 void print_board(Board b);
 

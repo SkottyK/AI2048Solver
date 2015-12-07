@@ -133,10 +133,10 @@ Move *effectual_moves(Board b, int *size) {
     return moves;
 }
 
-void shift(Board b, Move m) {
+int shift(Board b, Move m) {
     Board tmp = rotate_for_move(b, m);
 
-    int this, i;
+    int this, i, points = 0;
     int data[BOARDSIZE];
     for (int r=0; r<BOARDSIZE; r++) {
         i = 0;
@@ -148,6 +148,7 @@ void shift(Board b, Move m) {
                     data[i] = this;
                 } else if (this == data[i]) {
                     data[i] += this;
+                    points += data[i];
                     i++;
                 } else {
                     i++;
@@ -172,6 +173,7 @@ void shift(Board b, Move m) {
     b->data = tmp2->data;
     free_board(tmp);
     free(tmp2); // DO NOT FREE tmp2->data
+    return points;
 }
 
 /**********************************************************
