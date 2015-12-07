@@ -61,6 +61,145 @@ int test_rotate() {
     return 0;
 }
 
+void fill(int test[4][4], int r0[4], int r1[4], int r2[4], int r3[4]) {
+    for (int c = 0; c<4; c++) {
+        test[0][c] = r0[c];
+        test[1][c] = r1[c];
+        test[2][c] = r2[c];
+        test[3][c] = r3[c];
+    }
+}
+
+int test_shift() {
+    printf("Testing shift function\n");
+
+    Board b;
+
+    printf("    Testing on empty board...\n");
+    b = empty_board();
+    int zeroes[4][4];
+    for (int r=0; r<4; r++)
+        for (int c=0; c<4; c++)
+            zeroes[r][c] = 0;
+    assert(explicit_equal(b, zeroes));
+    shift(b, Up);
+    assert(explicit_equal(b, zeroes));
+    shift(b, Down);
+    assert(explicit_equal(b, zeroes));
+    shift(b, Left);
+    assert(explicit_equal(b, zeroes));
+    shift(b, Right);
+    assert(explicit_equal(b, zeroes));
+
+
+    printf("    Extensive tests on right shift...\n");
+    b = board_from_arr((int[4][4]){
+        { 2, 2, 2, 2},
+        { 2, 2, 2, 2},
+        { 2, 2, 2, 2},
+        { 2, 2, 2, 2}
+    });
+    shift(b, Right);
+    assert(explicit_equal(b, (int[4][4]){
+        { 0, 0, 4, 4},
+        { 0, 0, 4, 4},
+        { 0, 0, 4, 4},
+        { 0, 0, 4, 4}
+    }));
+    free(b);
+
+    b = board_from_arr((int[4][4]){
+        { 8, 4, 8, 8},
+        { 2, 8,32,64},
+        { 2, 0, 0, 0},
+        { 0, 0, 0, 2}
+    });
+    shift(b, Right);
+    assert(explicit_equal(b, (int[4][4]){
+        { 0, 8, 4,16},
+        { 2, 8,32,64},
+        { 0, 0, 0, 2},
+        { 0, 0, 0, 2}
+    }));
+    free(b);
+
+    b = board_from_arr((int[4][4]){
+        { 0, 0, 4, 4},
+        { 0, 2, 0, 2},
+        { 0, 4, 0, 2},
+        { 4, 0, 4, 0}
+    });
+    shift(b, Right);
+    assert(explicit_equal(b, (int[4][4]){
+        { 0, 0, 0, 8},
+        { 0, 0, 0, 4},
+        { 0, 0, 4, 2},
+        { 0, 0, 0, 8}
+    }));
+    free(b);
+
+
+    printf("    Tests on other directions...\n");
+    printf("        Testing Up...\n");
+    b = board_from_arr((int[4][4]){
+        { 2, 2, 2, 2},
+        { 2, 2, 2, 2},
+        { 2, 2, 2, 2},
+        { 2, 2, 2, 2}
+    });
+    shift(b, Up);
+    assert(explicit_equal(b, (int[4][4]){
+        { 4, 4, 4, 4},
+        { 4, 4, 4, 4},
+        { 0, 0, 0, 0},
+        { 0, 0, 0, 0}
+    }));
+    free(b);
+
+    printf("        Testing Down...\n");
+    b = board_from_arr((int[4][4]){
+        { 8, 4, 8, 8},
+        { 2, 8,32,64},
+        { 2, 0, 0, 0},
+        { 0, 0, 0, 2}
+    });
+    shift(b, Down);
+    assert(explicit_equal(b, (int[4][4]){
+        { 0, 0, 0, 0},
+        { 0, 0, 0, 8},
+        { 8, 4, 8,64},
+        { 4, 8,32, 2}
+    }));
+    free(b);
+
+    printf("        Testing Left...\n");
+    b = board_from_arr((int[4][4]){
+        { 8, 4, 8, 8},
+        { 2, 8,32,32},
+        { 2, 0, 0, 0},
+        { 0, 0, 0, 2}
+    });
+    shift(b, Left);
+    assert(explicit_equal(b, (int[4][4]){
+        { 8, 4,16, 0},
+        { 2, 8,64, 0},
+        { 2, 0, 0, 0},
+        { 2, 0, 0, 0}
+    }));
+    free(b);
+
+    return 0;
+}
+
+
 int main(int argc, const char * argv[]) {
-    return test_rotate();
+
+    /*
+    printf("Testing Rotate (visual check)\n");
+    test_rotate();
+    */
+
+    test_shift();
+
+    return 0;
 }
