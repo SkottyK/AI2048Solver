@@ -11,8 +11,9 @@
 
  */
 
-
+#include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 #include "board.h"
 #include "num_util.h"
 
@@ -42,6 +43,14 @@ Board empty_board() {
     }
     return b;
 }
+Board board_from_arr(int exp[4][4]) {
+    Board b = empty_board();
+    for (int r=0; r<4; r++)
+        for (int c=0; c<4; c++)
+            place(b, r, c, exp[r][c]);
+    return b;
+}
+
 void free_board(Board b) {
     free(b->data);
     free(b);
@@ -99,20 +108,46 @@ Move *valid_moves(Board b, int *size) {
     return moves;
 }
 
-
 void shift(Board b, Move m) {
-    /*
     Board tmp = rotate_for_move(b, m);
 
+    int this, i;
+    int data[BOARDSIZE];
+    for (int r=0; r<BOARDSIZE; r++) {
+        i = 0;
+        memset(data, 0, sizeof(int)*BOARDSIZE);
+        for (int c=BOARDSIZE-1; c >= 0; c--) {
+            this = bget(tmp, r, c);
+            if (this != 0) {
+                if (data[i] == 0) {
+                    data[i] = this;
+                } else if (this == data[i]) {
+                    data[i] += this;
+                    i++;
+                } else {
+                    i++;
+                    data[i] = this;
+                }
+            }
+        }
+        /*
+        for (int x=0; x<=i; x++)
+            printf("%d ", data[x]);
+        printf("| ");
+        for (int x=i+1; x<BOARDSIZE; x++)
+            printf("%d ", data[x]);
+        printf("\n");
+        */
+        for (int c=0; c<BOARDSIZE; c++)
+            place(tmp, r, c, data[BOARDSIZE-1-c]);
+    }
+
     Board tmp2 = invert_rotate_for_move(tmp, m);
-    int **old = b->data;
+    free(b->data);
     b->data = tmp2->data;
     free_board(tmp);
     free(tmp2); // DO NOT FREE tmp2->data
-    free(old);
-     */
 }
-
 
 /**********************************************************
 *   Printing
@@ -203,4 +238,15 @@ Board invert_rotate_for_move(Board og, Move m) {
     return b;
 }
 
+
+/* Returns 1 if equal, 0 if not */
+int explicit_equal(Board b, int exp[4][4]) {
+    for (int r=0; r<BOARDSIZE; r++) {
+        for (int c=0; c<BOARDSIZE; c++) {
+            if (exp[r][c] != bget(b,r,c))
+                return 0;
+        }
+    }
+    return 1;
+}
 

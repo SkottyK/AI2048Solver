@@ -16,6 +16,7 @@ struct board_data;
 typedef struct board_data *Board;
 
 Board empty_board();
+Board board_from_arr(int exp[4][4]);
 void free_board(Board b);
 
 void place_rand(Board b);
@@ -28,9 +29,9 @@ void shift(Board b, Move m);
 
 void print_board(Board b);
 
-
-
+/* Exposed for testing only */
 Board rotate_for_move(Board og, Move m);
 Board invert_rotate_for_move(Board og, Move m);
+int explicit_equal(Board b, int exp[4][4]);
 
 #endif /* board_h */
