@@ -25,6 +25,12 @@ Game init_game(Heuristic h) {
     return g;
 }
 
+void print_game(Game g) {
+    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n");
+    printf("Score: %d\n", g->score);
+    print_board(g->board);
+}
+
 void make_move(Game g, Move m) {
     g->score += shift(g->board, m);
     place_rand(g->board);
@@ -37,6 +43,7 @@ void print_commands() {
     printf("     Left: l\n");
     printf("    Right: r\n");
     printf("     Quit: q\n");
+    printf("     Help: h\n");
     printf("\n\nGood Luck!\n\n");
 }
 
@@ -45,44 +52,64 @@ void human_game() {
     print_commands();
 
 
-    char buf[MAXLINE];
+    //char buf[MAXLINE];
     Game g = init_game(NULL);
+    print_game(g);
 
+    char in;
     int playing = 1;
     while (playing) {
-        printf("\n\n\n\n\n\n\n\n\n\n\n\n\n");
-        printf("Score: %d\n", g->score);
-        print_board(g->board);
-
-        fgets(buf, MAXLINE, stdin);
-        if (strlen(buf) > 0) {
-            switch (buf[0]) {
-                    case 'q':
-                    playing = 0;
+        in = getc(stdin);
+        if (in == '\033') {
+            getc(stdin);
+            switch (getc(stdin)) {
+                case 'A':
+                    in = 'u';
                     break;
-                    case 'u':
-                    make_move(g, Up);
+                case 'B':
+                    in = 'd';
                     break;
-                    case 'd':
-                    make_move(g, Down);
+                case 'C':
+                    in = 'r';
                     break;
-                    case 'l':
-                    make_move(g, Left);
-                    break;
-                    case 'r':
-                    make_move(g, Right);
+                case 'D':
+                    in = 'l';
                     break;
                 default:
-                    printf("Command not recognized.\n");
-                    print_commands();
                     break;
-
-            }
-            if (pl_empty(open_spaces(g->board))) {
-                playing = 0;
             }
         }
+        switch (in) {
+            case 'q':
+                playing = 0;
+                break;
+            case 'u':
+                make_move(g, Up);
+                print_game(g);
+                break;
+            case 'd':
+                make_move(g, Down);
+                print_game(g);
+                break;
+            case 'l':
+                make_move(g, Left);
+                print_game(g);
+                break;
+            case 'r':
+                make_move(g, Right);
+                print_game(g);
+                break;
+            case 'h':
+                print_commands();
+                break;
+            default:
+                break;
+        }
+        if (pl_empty(open_spaces(g->board))) {
+            playing = 0;
+        }
     }
+    print_game(g);
     printf("Game Over! Final Score: %d\n", g->score);
 }
 
