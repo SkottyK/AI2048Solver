@@ -17,7 +17,6 @@
 #include "board.h"
 #include "num_util.h"
 
-#define BOARDSIZE 4
 #define NUMCHARS 5
 
 struct board_data {
@@ -43,7 +42,7 @@ Board empty_board() {
     }
     return b;
 }
-Board board_from_arr(int exp[4][4]) {
+Board board_from_arr(int exp[BOARDSIZE][BOARDSIZE]) {
     Board b = empty_board();
     for (int r=0; r<4; r++)
         for (int c=0; c<4; c++)
@@ -240,7 +239,7 @@ Board invert_rotate_for_move(Board og, Move m) {
 
 
 /* Returns 1 if equal, 0 if not */
-int explicit_equal(Board b, int exp[4][4]) {
+int explicit_equal(Board b, int exp[BOARDSIZE][BOARDSIZE]) {
     for (int r=0; r<BOARDSIZE; r++) {
         for (int c=0; c<BOARDSIZE; c++) {
             if (exp[r][c] != bget(b,r,c))

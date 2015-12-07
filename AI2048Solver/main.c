@@ -77,9 +77,9 @@ int test_shift() {
 
     printf("    Testing on empty board...\n");
     b = empty_board();
-    int zeroes[4][4];
-    for (int r=0; r<4; r++)
-        for (int c=0; c<4; c++)
+    int zeroes[BOARDSIZE][BOARDSIZE];
+    for (int r=0; r<BOARDSIZE; r++)
+        for (int c=0; c<BOARDSIZE; c++)
             zeroes[r][c] = 0;
     assert(explicit_equal(b, zeroes));
     shift(b, Up);
@@ -93,14 +93,14 @@ int test_shift() {
 
 
     printf("    Extensive tests on right shift...\n");
-    b = board_from_arr((int[4][4]){
+    b = board_from_arr((int[BOARDSIZE][BOARDSIZE]){
         { 2, 2, 2, 2},
         { 2, 2, 2, 2},
         { 2, 2, 2, 2},
         { 2, 2, 2, 2}
     });
     shift(b, Right);
-    assert(explicit_equal(b, (int[4][4]){
+    assert(explicit_equal(b, (int[BOARDSIZE][BOARDSIZE]){
         { 0, 0, 4, 4},
         { 0, 0, 4, 4},
         { 0, 0, 4, 4},
@@ -108,14 +108,14 @@ int test_shift() {
     }));
     free(b);
 
-    b = board_from_arr((int[4][4]){
+    b = board_from_arr((int[BOARDSIZE][BOARDSIZE]){
         { 8, 4, 8, 8},
         { 2, 8,32,64},
         { 2, 0, 0, 0},
         { 0, 0, 0, 2}
     });
     shift(b, Right);
-    assert(explicit_equal(b, (int[4][4]){
+    assert(explicit_equal(b, (int[BOARDSIZE][BOARDSIZE]){
         { 0, 8, 4,16},
         { 2, 8,32,64},
         { 0, 0, 0, 2},
@@ -123,14 +123,14 @@ int test_shift() {
     }));
     free(b);
 
-    b = board_from_arr((int[4][4]){
+    b = board_from_arr((int[BOARDSIZE][BOARDSIZE]){
         { 0, 0, 4, 4},
         { 0, 2, 0, 2},
         { 0, 4, 0, 2},
         { 4, 0, 4, 0}
     });
     shift(b, Right);
-    assert(explicit_equal(b, (int[4][4]){
+    assert(explicit_equal(b, (int[BOARDSIZE][BOARDSIZE]){
         { 0, 0, 0, 8},
         { 0, 0, 0, 4},
         { 0, 0, 4, 2},
@@ -141,14 +141,14 @@ int test_shift() {
 
     printf("    Tests on other directions...\n");
     printf("        Testing Up...\n");
-    b = board_from_arr((int[4][4]){
+    b = board_from_arr((int[BOARDSIZE][BOARDSIZE]){
         { 2, 2, 2, 2},
         { 2, 2, 2, 2},
         { 2, 2, 2, 2},
         { 2, 2, 2, 2}
     });
     shift(b, Up);
-    assert(explicit_equal(b, (int[4][4]){
+    assert(explicit_equal(b, (int[BOARDSIZE][BOARDSIZE]){
         { 4, 4, 4, 4},
         { 4, 4, 4, 4},
         { 0, 0, 0, 0},
@@ -157,14 +157,14 @@ int test_shift() {
     free(b);
 
     printf("        Testing Down...\n");
-    b = board_from_arr((int[4][4]){
+    b = board_from_arr((int[BOARDSIZE][BOARDSIZE]){
         { 8, 4, 8, 8},
         { 2, 8,32,64},
         { 2, 0, 0, 0},
         { 0, 0, 0, 2}
     });
     shift(b, Down);
-    assert(explicit_equal(b, (int[4][4]){
+    assert(explicit_equal(b, (int[BOARDSIZE][BOARDSIZE]){
         { 0, 0, 0, 0},
         { 0, 0, 0, 8},
         { 8, 4, 8,64},
@@ -173,14 +173,14 @@ int test_shift() {
     free(b);
 
     printf("        Testing Left...\n");
-    b = board_from_arr((int[4][4]){
+    b = board_from_arr((int[BOARDSIZE][BOARDSIZE]){
         { 8, 4, 8, 8},
         { 2, 8,32,32},
         { 2, 0, 0, 0},
         { 0, 0, 0, 2}
     });
     shift(b, Left);
-    assert(explicit_equal(b, (int[4][4]){
+    assert(explicit_equal(b, (int[BOARDSIZE][BOARDSIZE]){
         { 8, 4,16, 0},
         { 2, 8,64, 0},
         { 2, 0, 0, 0},

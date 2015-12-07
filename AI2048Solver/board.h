@@ -12,11 +12,13 @@
 #include <stdio.h>
 #include "2048.h"
 
+#define BOARDSIZE 4
+
 struct board_data;
 typedef struct board_data *Board;
 
 Board empty_board();
-Board board_from_arr(int exp[4][4]);
+Board board_from_arr(int exp[BOARDSIZE][BOARDSIZE]);
 void free_board(Board b);
 
 void place_rand(Board b);
@@ -24,7 +26,7 @@ void place(Board b, int r, int c, int val);
 int bget(Board b, int row, int col);
 
 PointList open_spaces(Board b);
-Move *valid_moves(Board b, int *size);
+Move *effectual_moves(Board b, int *size);
 void shift(Board b, Move m);
 
 void print_board(Board b);
@@ -32,6 +34,6 @@ void print_board(Board b);
 /* Exposed for testing only */
 Board rotate_for_move(Board og, Move m);
 Board invert_rotate_for_move(Board og, Move m);
-int explicit_equal(Board b, int exp[4][4]);
+int explicit_equal(Board b, int exp[BOARDSIZE][BOARDSIZE]);
 
 #endif /* board_h */
