@@ -51,7 +51,7 @@ Board board_from_arr(int exp[BOARDSIZE][BOARDSIZE]) {
 }
 Board board_cpy(Board other) {
     Board b = empty_board();
-    memcpy(b->data, other->data, BOARDSIZE*2);
+    memcpy(b->data, other->data, sizeof(int)*BOARDSIZE*BOARDSIZE);
     return b;
 }
 
