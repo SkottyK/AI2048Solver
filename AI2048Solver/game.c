@@ -32,8 +32,10 @@ void print_game(Game g) {
 }
 
 void make_move(Game g, Move m) {
-    g->score += shift(g->board, m);
-    place_rand(g->board);
+    if (is_effectual_move(g->board, m)) {
+        g->score += shift(g->board, m);
+        place_rand(g->board);
+    }
 }
 
 void print_commands() {
