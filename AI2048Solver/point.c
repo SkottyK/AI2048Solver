@@ -7,6 +7,7 @@
 //
 
 #include <stdlib.h>
+#include "list.h"
 #include "point.h"
 #include "num_util.h"
 
@@ -25,31 +26,21 @@ int pt_eqrc(Point p, int r, int c) {
 /****************************************
  * Point List
  ****************************************/
-typedef struct pnode_data {
-    Point p;
-    struct pnode_data *next;
-} *pnode;
-
 struct point_list_data {
     int N;
-    pnode root;
+    list points;
 };
 
 
 PointList pl_create() {
     PointList pl = malloc(sizeof(struct point_list_data));
     pl->N = 0;
-    pl->root = NULL;
+    list_new(&(pl->points), sizeof(struct point_data), free);
     return pl;
 }
 void pl_free(PointList pl) {
-    pnode node = pl->root;
-    while (node != NULL) {
-        pnode next = node->next;
-        free(node->p);
-        free(node);
-        node = next;
-    }
+    list_destroy(&(pl->points));
+    free(pl);
 }
 
 int pl_empty(PointList pl) {
@@ -57,9 +48,10 @@ int pl_empty(PointList pl) {
 }
 
 int pl_contains(PointList pl, int r, int c) {
-    pnode node = pl->root;
+    listNode *node = pl->points.head;
     while (node != NULL) {
-        if (pt_eqrc(node->p, r, c))
+        Point p = (Point)node->data;
+        if (pt_eqrc(p, r, c))
             return 1;
         node = node->next;
     }
@@ -70,10 +62,7 @@ void pl_insert(PointList pl, int r, int c) {
     Point p = malloc(sizeof(struct point_data));
     p->r = r;
     p->c = c;
-    pnode node = malloc(sizeof(struct pnode_data));
-    node->p = p;
-    node->next = pl->root;
-    pl->root = node;
+    list_prepend(&pl->points, (void *)p);
     pl->N++;
 }
 
@@ -83,12 +72,12 @@ Point pl_rand(PointList pl) {
     }
     int target = randint(pl->N);
     int i = 0;
-    pnode node = pl->root;
+    listNode *node = pl->points.head;
     while(i < target) {
         node = node->next;
         i++;
     }
-    return node->p;
+    return (Point)node->data;
 }
 
 
