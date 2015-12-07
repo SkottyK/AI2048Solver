@@ -10,17 +10,8 @@
 #define _048_h
 
 #include <stdio.h>
+#include "point.h"
+#include "move.h"
 
-typedef enum move_directions {
-    Up,
-    Down,
-    Left,
-    Right
-} Move;
-
-typedef struct point_data {
-    int r;
-    int c;
-} *Point;
 
 #endif /* _048_h */

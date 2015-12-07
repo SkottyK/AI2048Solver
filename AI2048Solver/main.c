@@ -7,16 +7,59 @@
 //
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
 #include "board.h"
 
-int main(int argc, const char * argv[]) {
 
+
+int test_rotate() {
     Board b = empty_board();
 
-    set(b, 0, 0, 1);
-    set(b, 0, 2, 2);
+    for (int r=0; r<4; r++) {
+        for (int c=0; c<4; c++) {
+            place(b, r, c, (r+1) * 10 + (c+1));
+        }
+    }
+    //assert(pl_empty(open_spaces(b)));
 
-    print_board(B);
+    Board tmp, tmp2;
+    printf("Original:\n");
+    print_board(b);
 
+
+    printf("\nRotate for up:\n");
+    tmp = rotate_for_move(b, Up);
+    tmp2 = invert_rotate_for_move(tmp, Up);
+    print_board(tmp);
+    printf("Back to normal:\n");
+    print_board(tmp2);
+    free(tmp);
+    free(tmp2);
+
+
+    printf("\nRotate for down:\n");
+    tmp = rotate_for_move(b, Down);
+    tmp2 = invert_rotate_for_move(tmp, Down);
+    print_board(tmp);
+    printf("Back to normal:\n");
+    print_board(tmp2);
+    free(tmp);
+    free(tmp2);
+
+
+    printf("\nRotate for left:\n");
+    tmp = rotate_for_move(b, Left);
+    tmp2 = invert_rotate_for_move(tmp, Left);
+    print_board(tmp);
+    printf("Back to normal:\n");
+    print_board(tmp2);
+    free(tmp);
+    free(tmp2);
+    
     return 0;
+}
+
+int main(int argc, const char * argv[]) {
+    return test_rotate();
 }
