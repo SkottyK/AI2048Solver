@@ -11,6 +11,7 @@
 #include "game.h"
 #include "heuristics.h"
 #include "move.h"
+#include "num_util.h"
 
 
 void print_commands() {
@@ -88,6 +89,23 @@ void human_game() {
     }
     print_game(g);
     printf("Game Over! Final Score: %d\n", g->score);
+}
+
+void baseline(int num_tests) {
+    int scores[num_tests];
+
+    for (int i=0; i < num_tests; i++) {
+        Game g = init_game(squaresum_heuristic);
+        while (!pl_empty(open_spaces(g->board))) {
+            make_move(g, (Move)randint(4));
+        }
+        scores[i] = g->score;
+    }
+
+    for (int i = 0; i < num_tests; i++) {
+        printf("%d\n", scores[i]);
+    }
+    printf("\n\n");
 }
 
 

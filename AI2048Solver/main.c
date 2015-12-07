@@ -225,8 +225,10 @@ int main(int argc, const char * argv[]) {
     test_shift();
 
     test_copy();
-    */
-    human_game();
 
+    human_game();
+*/
+
+    baseline(100);
     return 0;
 }

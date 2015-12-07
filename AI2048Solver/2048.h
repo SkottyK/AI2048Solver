@@ -14,4 +14,6 @@
 /* Play game on command line */
 void human_game();
 
+void baseline(int num_trials);
+
 #endif /* _048_h */
