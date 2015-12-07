@@ -229,6 +229,10 @@ int main(int argc, const char * argv[]) {
     human_game();
 */
 
-    baseline(100);
+    int num_trials = 100;
+    if (argc == 2) {
+        num_trials = atoi(argv[1]);
+    }
+    baseline(num_trials);
     return 0;
 }
