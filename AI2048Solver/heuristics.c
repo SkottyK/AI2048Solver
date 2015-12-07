@@ -16,3 +16,13 @@ int sum_heuristic(Board b) {
     return sum;
 }
 
+int squaresum_heuristic(Board b) {
+    int sum = 0;
+    for (int r=0; r<BOARDSIZE; r++) {
+        for (int c=0; c<BOARDSIZE; c++) {
+            int this = bget(b, r, c);
+            sum += this * this;
+        }
+    }
+    return sum;
+}

@@ -49,6 +49,11 @@ Board board_from_arr(int exp[BOARDSIZE][BOARDSIZE]) {
             place(b, r, c, exp[r][c]);
     return b;
 }
+Board board_cpy(Board other) {
+    Board b = empty_board();
+    memcpy(b->data, other->data, sizeof(int)*BOARDSIZE*BOARDSIZE);
+    return b;
+}
 
 void free_board(Board b) {
     free(b->data);

@@ -9,8 +9,8 @@
 #ifndef game_h
 #define game_h
 
-#include "2048.h"
 #include "board.h"
+#include "move.h"
 
 typedef int (*Heuristic)(Board B);
 
@@ -21,9 +21,11 @@ typedef struct game_data {
 } *Game;
 
 Game init_game(Heuristic h);
-void make_move(Game g, Move m);
+Game game_cpy(Game og);
 
-/* Play game on command line */
-void human_game();
+void make_move(Game g, Move m);
+Game test_move(Game g, Move m);
+int estimate_move(Game g, Move m);
+void print_game(Game g);
 
 #endif /* game_h */

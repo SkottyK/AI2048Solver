@@ -10,7 +10,8 @@
 #define board_h
 
 #include <stdio.h>
-#include "2048.h"
+#include "move.h"
+#include "point.h"
 
 #define BOARDSIZE 4
 
@@ -19,6 +20,7 @@ typedef struct board_data *Board;
 
 Board empty_board();
 Board board_from_arr(int exp[BOARDSIZE][BOARDSIZE]);
+Board board_cpy(Board b);
 void free_board(Board b);
 
 void place_rand(Board b);

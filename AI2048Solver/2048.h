@@ -10,8 +10,10 @@
 #define _048_h
 
 #include <stdio.h>
-#include "point.h"
-#include "move.h"
 
+/* Play game on command line */
+void human_game();
+
+void baseline(int num_trials);
 
 #endif /* _048_h */
