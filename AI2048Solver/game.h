@@ -17,13 +17,13 @@ typedef int (*Heuristic)(Board B);
 typedef struct game_data {
     Heuristic h;
     Board board;
-} Game;
-
+    int score;
+} *Game;
 
 Game init_game(Heuristic h);
-Game make_move(Game g, Move m);
+void make_move(Game g, Move m);
 
 /* Play game on command line */
-void play_game();
+void human_game();
 
 #endif /* game_h */

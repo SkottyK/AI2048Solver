@@ -11,10 +11,12 @@
 #include <assert.h>
 #include "board.h"
 #include "point.h"
+#include "game.h"
 
 
 
 int test_rotate() {
+    printf("Testing Rotate (visual check)\n");
     Board b = empty_board();
 
     for (int r=0; r<4; r++) {
@@ -195,11 +197,12 @@ int test_shift() {
 int main(int argc, const char * argv[]) {
 
     /*
-    printf("Testing Rotate (visual check)\n");
     test_rotate();
-    */
 
     test_shift();
+    */
+
+    human_game();
 
     return 0;
 }
