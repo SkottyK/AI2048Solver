@@ -116,6 +116,14 @@ int is_effectual_move(Board b, Move m) {
     return 0;
 }
 
+int is2048(Board b) {
+    for (int r=0; r<BOARDSIZE; r++)
+        for (int c=0; c<BOARDSIZE; c++)
+            if (bget(b, r, c) == 2048)
+                return 1;
+    return 0;
+}
+
 Move *effectual_moves(Board b, int *size) {
     int cnt = 0;
     Move *moves = calloc(NUM_MOVES, sizeof(Move));
