@@ -10,5 +10,6 @@
 #define num_util_h
 
 int num_digits(int x);
+int randint(int n);
 
 #endif /* num_util_h */
