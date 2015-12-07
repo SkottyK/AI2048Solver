@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <time.h>
 #include "2048.h"
 #include "board.h"
 #include "point.h"
@@ -217,8 +218,8 @@ int test_copy() {
 
 
 int main(int argc, const char * argv[]) {
-
-    /*
+    srand((unsigned)time(NULL));
+/*
     test_rotate();
 
     test_shift();

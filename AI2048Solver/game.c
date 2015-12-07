@@ -7,14 +7,12 @@
 //
 
 #include <stdlib.h>
-#include <time.h>
 #include <string.h>
 #include "game.h"
 
 #define MAXLINE 400
 
 Game init_game(Heuristic h) {
-    srand((unsigned)time(NULL));
     Game g = (Game)malloc(sizeof(struct game_data));
 
     g->board = empty_board();
