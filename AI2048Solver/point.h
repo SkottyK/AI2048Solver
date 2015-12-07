@@ -26,6 +26,7 @@ PointList pl_create();
 void pl_free(PointList pl);
 
 int pl_empty(PointList pl);
+int pl_size(PointList pl);
 int pl_contains(PointList pl, int r, int c);
 void pl_insert(PointList pl, int r, int c);
 

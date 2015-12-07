@@ -47,6 +47,10 @@ int pl_empty(PointList pl) {
     return pl->N == 0;
 }
 
+int pl_size(PointList pl) {
+    return pl->N;
+}
+
 int pl_contains(PointList pl, int r, int c) {
     listNode *node = pl->points.head;
     while (node != NULL) {
