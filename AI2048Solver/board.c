@@ -70,7 +70,7 @@ PointList open_spaces(Board b) {
     PointList pl = pl_create();
     for (int r=0; r<BOARDSIZE; r++) {
         for (int c=0; c<BOARDSIZE; c++) {
-            if (bget(b, r, c))
+            if (bget(b, r, c) == 0)
                 pl_insert(pl, r, c);
         }
     }

@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "board.h"
+#include "point.h"
 
 
 
@@ -21,7 +22,7 @@ int test_rotate() {
             place(b, r, c, (r+1) * 10 + (c+1));
         }
     }
-    //assert(pl_empty(open_spaces(b)));
+    assert(pl_empty(open_spaces(b)));
 
     Board tmp, tmp2;
     printf("Original:\n");
