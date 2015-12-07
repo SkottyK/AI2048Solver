@@ -18,13 +18,19 @@ Game init_game(Heuristic h) {
     srand((unsigned)time(NULL));
     Game g = (Game)malloc(sizeof(struct game_data));
 
-    Board b = empty_board();
-    place_rand(b);
-    place_rand(b);
-    g->board = b;
+    g->board = empty_board();
+    place_rand(g->board);
+    place_rand(g->board);
     g->h = h;
     g->score = 0;
 
+    return g;
+}
+Game game_cpy(Game og) {
+    Game g = (Game)malloc(sizeof(struct game_data));
+    g->board = board_cpy(og->board);
+    g->h = og->h;
+    g->score = 0;
     return g;
 }
 
@@ -33,10 +39,10 @@ void print_game(Game g) {
     printf("Score: %d\n", g->score);
     print_board(g->board);
     printf("Heuristic:\n");
-    printf("     Up: %d\n", test_move(g, Up));
-    printf("   Down: %d\n", test_move(g, Down));
-    printf("   Left: %d\n", test_move(g, Left));
-    printf("  Right: %d\n", test_move(g, Right));
+    printf("     Up: %d\n", estimate_move(g, Up));
+    printf("   Down: %d\n", estimate_move(g, Down));
+    printf("   Left: %d\n", estimate_move(g, Left));
+    printf("  Right: %d\n", estimate_move(g, Right));
 }
 
 void make_move(Game g, Move m) {
@@ -46,7 +52,16 @@ void make_move(Game g, Move m) {
     }
 }
 
-int test_move(Game g, Move m) {
+Game test_move(Game og, Move m) {
+    if (is_effectual_move(og->board, m)) {
+        Game g = game_cpy(og);
+        make_move(g, m);
+        return g;
+    }
+    return NULL;
+}
+
+int estimate_move(Game g, Move m) {
     if (is_effectual_move(g->board, m)) {
         Board b = board_cpy(g->board);
         shift(b, m);
