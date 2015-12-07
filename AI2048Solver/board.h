@@ -16,16 +16,21 @@ struct board_data;
 typedef struct board_data *Board;
 
 Board empty_board();
+void free_board(Board b);
 
-Board shift(Board b, Move m);
-Board place_rand(Board b);
-Board place(Board b, int r, int c, int val);
+void place_rand(Board b);
+void place(Board b, int r, int c, int val);
+int bget(Board b, int row, int col);
 
-Point *open_spaces(Board b);
-Move *valid_moves(Board b);
+PointList open_spaces(Board b);
+Move *valid_moves(Board b, int *size);
+void shift(Board b, Move m);
 
-int get(Board b, int row, int col);
-void set(Board b, int row, int col, int val);
 void print_board(Board b);
+
+
+
+Board rotate_for_move(Board og, Move m);
+Board invert_rotate_for_move(Board og, Move m);
 
 #endif /* board_h */
