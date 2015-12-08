@@ -30,6 +30,10 @@ Game game_cpy(Game og) {
     g->score = 0;
     return g;
 }
+void game_free(Game g) {
+    free_board(g->board);
+    free(g);
+}
 
 void print_game(Game g) {
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n");

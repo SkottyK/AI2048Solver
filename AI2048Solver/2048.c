@@ -60,14 +60,18 @@ int play2048(Game g) {
                 int heur = twoheur > fourheur ? twoheur : fourheur;
                 maxheur = maxheur > heur ? maxheur : heur;
                 node = node->next;
+                free_board(cpy);
+                free_board(cpy2);
             }
             if (maxheur > bestHeur) {
                 bestHeur = maxheur;
                 bestMove = moves[i];
             }
+            game_free(test);
+            pl_free(pl);
         }
         make_move(g, bestMove);
-        
+        free(moves);
     }
     free(size);
     return g->score;
@@ -154,6 +158,10 @@ void baseline(int num_tests) {
         scores[1][i] = play2048(g2);
         scores[2][i] = play2048(g3);
         scores[3][i] = play2048(g4);
+        game_free(g);
+        game_free(g2);
+        game_free(g3);
+        game_free(g4);
     }
 
     printf("Baseline,Square Sum,Weight Sequence,Empty Blocks\n");

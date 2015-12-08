@@ -36,7 +36,12 @@ PointList pl_create() {
     return pl;
 }
 void pl_free(PointList pl) {
-    list_destroy(&(pl->points));
+    listNode *node = pl->points.head;
+    while (node != NULL) {
+        listNode *tmp = node;
+        node = node->next;
+        free(tmp);
+    }
     free(pl);
 }
 
