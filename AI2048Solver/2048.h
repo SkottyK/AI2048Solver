@@ -13,7 +13,7 @@
 #include "game.h"
 
 /* Play game on command line */
-void play2048(Game g);
+int play2048(Game g);
 
 void human_game();
 

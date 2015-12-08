@@ -28,12 +28,15 @@ void print_commands() {
 }
 
 
-void play2048(Game g) {
+int play2048(Game g) {
+    int* size = (int*)malloc(sizeof(int));
     while(!is2048(g->board)) {
-        int* size = (int*)malloc(sizeof(int));
+        //print_board(g->board);
         Move* moves = effectual_moves(g->board, size);
-        if (moves == NULL) {
-            printf("No more moves, game over!\n");
+        //printf("num_moves %d\n", *size);
+        if (moves == NULL || *size == 0) {
+            //printf("No more moves, game over!\n");
+            return g->score;
             break;
         }
         int i;
@@ -66,7 +69,8 @@ void play2048(Game g) {
         make_move(g, bestMove);
         
     }
-    printf("Game Over! Final Score: %d\n", g->score);
+    free(size);
+    return g->score;
 }
 
 void human_game() {
@@ -137,6 +141,7 @@ void human_game() {
 
 void baseline(int num_tests) {
     int scores[num_tests];
+    int scores2[num_tests];
 
     for (int i=0; i < num_tests; i++) {
         Game g = init_game(squaresum_heuristic);
@@ -144,10 +149,11 @@ void baseline(int num_tests) {
             make_move(g, (Move)randint(4));
         }
         scores[i] = g->score;
+        scores2[i] = play2048(g);
     }
 
     for (int i = 0; i < num_tests; i++) {
-        printf("%d\n", scores[i]);
+        printf("%d, %d\n", scores[i], scores2[i]);
     }
     printf("\n\n");
 }
