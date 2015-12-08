@@ -26,10 +26,7 @@ int pt_eqrc(Point p, int r, int c) {
 /****************************************
  * Point List
  ****************************************/
-struct point_list_data {
-    int N;
-    list points;
-};
+
 
 
 PointList pl_create() {

@@ -19,7 +19,10 @@ typedef struct point_data {
 int pt_eq(Point p1, Point p2);
 int pt_eqrc(Point p, int r, int c);
 
-struct point_list_data;
+struct point_list_data {
+    int N;
+    list points;
+};
 typedef struct point_list_data *PointList;
 
 PointList pl_create();
