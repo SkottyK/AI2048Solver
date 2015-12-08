@@ -44,6 +44,17 @@ int weighted_sum1(Board b) {
     return sum;
 }
 
+int weighted_sum2(Board b) {
+    int sum = 0;
+    for (int r=0; r<BOARDSIZE; r++) {
+        for (int c=0; c<BOARDSIZE; c++) {
+            int this = bget(b, r, c);
+            sum += this * this * (r + c);
+        }
+    }
+    return sum;
+}
+
 int empty_blocks(Board b) {
     PointList pl = open_spaces(b);
     if (pl == NULL) {
