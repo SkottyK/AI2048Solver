@@ -14,5 +14,7 @@
 
 int sum_heuristic(Board b);
 int squaresum_heuristic(Board b);
+int weighted_sum1(Board b);
+int empty_blocks(Board b);
 
 #endif /* heuristics_h */

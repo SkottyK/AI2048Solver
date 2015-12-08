@@ -140,23 +140,27 @@ void human_game() {
 }
 
 void baseline(int num_tests) {
-    int scores[num_tests];
-    int scores2[num_tests];
+    int scores[4][num_tests];
 
     for (int i=0; i < num_tests; i++) {
         Game g = init_game(squaresum_heuristic);
-        Game g2 = game_cpy(g);
+        Game g2 = init_game(squaresum_heuristic);
+        Game g3 = init_game(weighted_sum1);
+        Game g4 = init_game(empty_blocks);
         while (!pl_empty(open_spaces(g->board))) {
             make_move(g, (Move)randint(4));
         }
-        scores[i] = g->score;
-        scores2[i] = play2048(g2);
+        scores[0][i] = g->score;
+        scores[1][i] = play2048(g2);
+        scores[2][i] = play2048(g3);
+        scores[3][i] = play2048(g4);
     }
 
+    printf("Baseline,Square Sum,Weight Sequence,Empty Blocks\n");
     for (int i = 0; i < num_tests; i++) {
-        printf("%d, %d\n", scores[i], scores2[i]);
+        printf("%d,%d,%d,%d\n", scores[0][i], scores[1][i], scores[2][i], scores[3][i]);
     }
-    printf("\n\n");
+    printf("\n");
 }
 
 
