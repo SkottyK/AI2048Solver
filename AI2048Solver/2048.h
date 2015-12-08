@@ -17,6 +17,6 @@ int play2048(Game g);
 
 void human_game();
 
-void baseline(int num_trials);
+void test_suite(int argc, const char *argv[]);
 
 #endif /* _048_h */

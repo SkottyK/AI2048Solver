@@ -6,6 +6,8 @@
 //  Copyright © 2015 Scott Krulcik. All rights reserved.
 //
 #include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
 #include "list.h"
 #include "2048.h"
 #include "board.h"
@@ -143,30 +145,76 @@ void human_game() {
     printf("Game Over! Final Score: %d\n", g->score);
 }
 
-void baseline(int num_tests) {
-    int scores[4][num_tests];
+void test_random(int *score, int *maxtile) {
+    Game g = init_game(squaresum_heuristic);
+    while (!pl_empty(open_spaces(g->board))) {
+        make_move(g, (Move)randint(4));
+    }
+    *score = g->score;
+    *maxtile = max_tile(g->board);
+    game_free(g);
+}
+
+void test_heuristic(Heuristic h, int *score, int *maxtile) {
+    Game g = init_game(h);
+    *score = play2048(g);
+    *maxtile = max_tile(g->board);
+    game_free(g);
+}
+
+void test_suite(int argc, const char *argv[]) {
+    long num_tests = 100;
+    FILE *score_file = stdout;
+    FILE *tile_file = stdout;
+    if (argc > 1) {
+        // First argument should be number of trials
+        num_tests = strtol(argv[1], NULL, 10);
+        if (argc > 2) {
+            const char *score_filename = argv[2];
+            if ((score_file = fopen(score_filename, "w")) == NULL) {
+                printf("Error: Could not open score file\n");
+                exit(1);
+            }
+            if (argc > 3) {
+                const char *score_filename = argv[3];
+                if ((tile_file = fopen(score_filename, "w")) == NULL) {
+                    printf("Error: Could not open max tile file\n");
+                    exit(1);
+                }
+            }
+        }
+    }
+    const char *f_labels = "Squaresum,Empty Blocks,Sequential Weight,Weight RC";
+    Heuristic h_functions[] = {
+        squaresum_heuristic,
+        empty_blocks,
+        weighted_sum1,
+        weighted_sum2
+    };
+    int num_funcs = 4;
+    int scores[num_funcs+1][num_tests];
+    int mtiles[num_funcs+1][num_tests];
 
     for (int i=0; i < num_tests; i++) {
-        Game g = init_game(squaresum_heuristic);
-        Game g2 = init_game(squaresum_heuristic);
-        Game g3 = init_game(weighted_sum1);
-        Game g4 = init_game(empty_blocks);
-        while (!pl_empty(open_spaces(g->board))) {
-            make_move(g, (Move)randint(4));
+        test_random(&scores[0][i], &mtiles[0][i]);
+        for (int h=0; h<num_funcs; h++) {
+            test_heuristic(h_functions[h], &scores[1+h][i], &mtiles[1+h][i]);
         }
-        scores[0][i] = g->score;
-        scores[1][i] = play2048(g2);
-        scores[2][i] = play2048(g3);
-        scores[3][i] = play2048(g4);
-        game_free(g);
-        game_free(g2);
-        game_free(g3);
-        game_free(g4);
     }
 
-    printf("Baseline,Square Sum,Weight Sequence,Empty Blocks\n");
-    for (int i = 0; i < num_tests; i++) {
-        printf("%d,%d,%d,%d\n", scores[0][i], scores[1][i], scores[2][i], scores[3][i]);
+    fprintf(score_file, "Baseline,%s\n", f_labels);
+    for (int i=0; i < num_tests; i++) {
+        for (int j=0; j < num_funcs + 1; j++) {
+            fprintf(score_file, "%d%s", scores[j][i], (j==num_funcs)?"\n":",");
+        }
+    }
+    printf("\n");
+
+    fprintf(tile_file, "Baseline,%s\n", f_labels);
+    for (int i=0; i < num_tests; i++) {
+        for (int j=0; j < num_funcs + 1; j++) {
+            fprintf(tile_file, "%d%s", mtiles[j][i], (j==num_funcs)?"\n":",");
+        }
     }
     printf("\n");
 }
