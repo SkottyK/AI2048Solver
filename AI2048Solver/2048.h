@@ -10,8 +10,11 @@
 #define _048_h
 
 #include <stdio.h>
+#include "game.h"
 
 /* Play game on command line */
+void play2048(Game g);
+
 void human_game();
 
 void baseline(int num_trials);
