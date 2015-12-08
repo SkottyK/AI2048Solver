@@ -145,11 +145,12 @@ void baseline(int num_tests) {
 
     for (int i=0; i < num_tests; i++) {
         Game g = init_game(squaresum_heuristic);
+        Game g2 = game_cpy(g);
         while (!pl_empty(open_spaces(g->board))) {
             make_move(g, (Move)randint(4));
         }
         scores[i] = g->score;
-        scores2[i] = play2048(g);
+        scores2[i] = play2048(g2);
     }
 
     for (int i = 0; i < num_tests; i++) {
