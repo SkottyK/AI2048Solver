@@ -129,6 +129,15 @@ int is2048(Board b) {
     return 0;
 }
 
+int max_tile(Board b) {
+    int max = 0;
+    for (int r=0; r<BOARDSIZE; r++)
+        for (int c=0; c<BOARDSIZE; c++)
+            if (bget(b, r, c) > max)
+                max = bget(b, r, c);
+    return max;
+}
+
 Move *effectual_moves(Board b, int *size) {
     int cnt = 0;
     Move *moves = calloc(NUM_MOVES, sizeof(Move));
