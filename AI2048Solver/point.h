@@ -10,6 +10,7 @@
 #define point_h
 
 #include <stdio.h>
+#include "list.h"
 
 typedef struct point_data {
     int r;
