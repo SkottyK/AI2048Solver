@@ -41,7 +41,7 @@ double average_score(unsigned n, const double *theta, double *grad, void* f_data
     int score;
 
     for (int i = 0; i < data->num_iterations; i++) {
-        test_heuristic(&theta_weight, &score, NULL);
+        test_minimax(&theta_weight, &score, NULL);
         average += (double)score * multiplier;
     }
 
@@ -59,7 +59,7 @@ double track_average(unsigned n, const double *theta, double *grad, void* f_data
     double averages[data->num_iterations/10];
 
     for (int i = 0; i < data->num_iterations; i++) {
-        test_heuristic(&theta_weight, &score, NULL);
+        test_minimax(&theta_weight, &score, NULL);
         average += (double)score * multiplier;
         if (i % 10 == 0) {
             averages[i / 10] = average * ((double)data->num_iterations / i);

@@ -25,7 +25,7 @@ void game_free(Game g);
 
 void make_move(Game g, Move m);
 Game test_move(Game g, Move m);
-double estimate_move(Game g, Move m);
 void print_game(Game g);
+double expected_value(Game g, Move m, int n);
 
 #endif /* game_h */

@@ -6,6 +6,7 @@
 //  Copyright © 2015 Scott Krulcik. All rights reserved.
 //
 
+#include <math.h>
 #include <stdlib.h>
 #include <string.h>
 #include "game.h"
@@ -35,15 +36,30 @@ void game_free(Game g) {
     free(g);
 }
 
+
+void estimate_str(Game g, Move m, char res[10]) {
+    double result = expected_value(g, m, 1);
+    if (result == -HUGE_VAL) {
+        sprintf(res, "INVALID");
+    } else {
+        sprintf(res, "%f", result);
+    }
+}
+
 void print_game(Game g) {
+    char fbuf[10];
     printf("\n\n\n\n\n\n\n\n\n\n\n\n\n");
     printf("Score: %d\n", g->score);
     print_board(g->board);
     printf("Heuristic:\n");
-    printf("     Up: %f\n", estimate_move(g, Up));
-    printf("   Down: %f\n", estimate_move(g, Down));
-    printf("   Left: %f\n", estimate_move(g, Left));
-    printf("  Right: %f\n", estimate_move(g, Right));
+    estimate_str(g, Up, fbuf);
+    printf("     Up: %s\n", fbuf);
+    estimate_str(g, Down, fbuf);
+    printf("   Down: %s\n", fbuf);
+    estimate_str(g, Left, fbuf);
+    printf("   Left: %s\n", fbuf);
+    estimate_str(g, Right, fbuf);
+    printf("  Right: %s\n", fbuf);
 }
 
 void make_move(Game g, Move m) {
@@ -62,15 +78,33 @@ Game test_move(Game og, Move m) {
     return NULL;
 }
 
-double estimate_move(Game g, Move m) {
-    if (is_effectual_move(g->board, m)) {
-        Board b = board_cpy(g->board);
-        shift(b, m);
-        double hval = g->h(b);
-        free(b);
-        return hval;
+
+/* Returns -HUGEVAL if there is nothing to do */
+double expected_value(Game g, Move m, int n) {
+    if (n < 1) {
+        if (is_effectual_move(g->board, m)) {
+            Board b = board_cpy(g->board);
+            shift(b, m);
+            place_rand(b);
+            double hval = g->h(b);
+            free(b);
+            return hval;
+        }
+        return -HUGE_VAL;
+    } else {
+        double sum = 0.0;
+        int neffectual;
+        for (Move m=Up; m <= Right; m++) {
+            double result = expected_value(g, m, n - 1);
+            if (result != -HUGE_VAL) {
+                neffectual++;
+                sum += result;
+            }
+        }
+        if (neffectual)
+            return sum / (double)neffectual;
+        return -HUGE_VAL;
     }
-    return -1;
 }
 
 

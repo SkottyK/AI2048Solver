@@ -82,6 +82,36 @@ int play2048(Game g) {
     return g->score;
 }
 
+
+int playExpected2048(Game g, int depth) {
+    int size;
+    while(!is2048(g->board)) {
+        Move* moves = effectual_moves(g->board, &size);
+        // Test end conditions
+        if (moves == NULL)
+            break;
+        if (size == 0) {
+            free(moves);
+            break;
+        }
+        int i;
+        Move bestMove = moves[0];
+        double bestE = 0;
+        for (i = 0; i < size; i++) {
+            double E = expected_value(g, moves[i], depth);
+            if (E > bestE) {
+                bestMove = moves[i];
+                bestE = E;
+            }
+        }
+        make_move(g, bestMove);
+        free(moves);
+    }
+    return g->score;
+}
+
+
+
 void human_game() {
     printf("Welcome to 2048!\n");
     print_commands();
@@ -162,9 +192,15 @@ void test_random(int *score, int *maxtile) {
     game_free(g);
 }
 
-void test_heuristic(Heuristic h, int *score, int *maxtile) {
+void test_minimax(Heuristic h, int *score, int *maxtile) {
     Game g = init_game(h);
     *score = play2048(g);
+    //*maxtile = max_tile(g->board);
+    game_free(g);
+}
+void test_expectation(Heuristic h, int depth, int *score, int *maxtile) {
+    Game g= init_game(h);
+    *score = playExpected2048(g, depth);
     //*maxtile = max_tile(g->board);
     game_free(g);
 }
@@ -205,7 +241,7 @@ void test_suite(int argc, const char *argv[]) {
     for (int i=0; i < num_tests; i++) {
         test_random(&scores[0][i], &mtiles[0][i]);
         for (int h=0; h<num_funcs; h++) {
-            test_heuristic(h_functions[h], &scores[1+h][i], &mtiles[1+h][i]);
+            test_minimax(h_functions[h], &scores[1+h][i], &mtiles[1+h][i]);
         }
     }
 
