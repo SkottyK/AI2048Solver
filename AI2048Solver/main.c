@@ -230,7 +230,7 @@ int main(int argc, const char * argv[]) {
 
 //    test_suite(argc, argv);
 
-    optimize_score(100);
+    optimize_score(200);
 
     return 0;
 }

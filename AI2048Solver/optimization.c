@@ -51,6 +51,32 @@ double average_score(unsigned n, const double *theta, double *grad, void* f_data
     return average;
 }
 
+double track_average(unsigned n, const double *theta, double *grad, void* f_data) {
+    custom_data *data = (custom_data *)f_data;
+    double multiplier = 1.0 / (double)data->num_iterations;
+    double average = 0.0;
+    int score;
+    double averages[data->num_iterations/10];
+
+    for (int i = 0; i < data->num_iterations; i++) {
+        test_heuristic(&theta_weight, &score, NULL);
+        average += (double)score * multiplier;
+        if (i % 10 == 0) {
+            averages[i / 10] = average * ((double)data->num_iterations / i);
+        }
+    }
+    printf("iter,difference\n");
+    for (int i = 0; i < data->num_iterations/10; i++) {
+        printf("%3d0,%5.3f\n", i, (averages[i] - average)/average);
+    }
+    printf("\n");
+
+    runs++;
+    printf("%d,%.3f\n", runs, average);
+
+    return average;
+}
+
 double sum0(unsigned n, const double *theta, double *grad, void *f_data) {
     double sum = 0;
     double epsilon = 0.001;
