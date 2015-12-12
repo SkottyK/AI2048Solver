@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		D2008E3C1C0E7F0D008CC0B7 /* game.c in Sources */ = {isa = PBXBuildFile; fileRef = D2008E3A1C0E7F0D008CC0B7 /* game.c */; };
 		D222902C1C04D606000EE872 /* 2048.c in Sources */ = {isa = PBXBuildFile; fileRef = D222902A1C04D606000EE872 /* 2048.c */; };
+		D2A5D8E31C1A1D0C00CDBF7A /* optimization.c in Sources */ = {isa = PBXBuildFile; fileRef = D2A5D8E11C1A1D0C00CDBF7A /* optimization.c */; };
+		D2A5D8EA1C1BEAF200CDBF7A /* nlopt.h in Sources */ = {isa = PBXBuildFile; fileRef = D2A5D8E91C1BEAF200CDBF7A /* nlopt.h */; };
+		D2A5D8EE1C1BF24E00CDBF7A /* libnlopt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A5D8ED1C1BF24E00CDBF7A /* libnlopt.a */; };
 		D2E4E3F01C15167D00CF4A2A /* point.c in Sources */ = {isa = PBXBuildFile; fileRef = D2E4E3EE1C15167D00CF4A2A /* point.c */; };
 		D2E4E3F31C1520E400CF4A2A /* list.c in Sources */ = {isa = PBXBuildFile; fileRef = D2E4E3F11C1520E400CF4A2A /* list.c */; };
 		D2E4E3F61C15216400CF4A2A /* move.c in Sources */ = {isa = PBXBuildFile; fileRef = D2E4E3F41C15216400CF4A2A /* move.c */; };
@@ -35,6 +38,11 @@
 		D2008E3B1C0E7F0D008CC0B7 /* game.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = game.h; sourceTree = "<group>"; };
 		D222902A1C04D606000EE872 /* 2048.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = 2048.c; sourceTree = "<group>"; };
 		D222902B1C04D606000EE872 /* 2048.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = 2048.h; sourceTree = "<group>"; };
+		D2A5D8E11C1A1D0C00CDBF7A /* optimization.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = optimization.c; sourceTree = "<group>"; };
+		D2A5D8E21C1A1D0C00CDBF7A /* optimization.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = optimization.h; sourceTree = "<group>"; };
+		D2A5D8E91C1BEAF200CDBF7A /* nlopt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = nlopt.h; sourceTree = "<group>"; };
+		D2A5D8EB1C1BF19000CDBF7A /* libnlopt.la */ = {isa = PBXFileReference; lastKnownFileType = text; name = libnlopt.la; path = ../../../../../../../usr/local/lib/libnlopt.la; sourceTree = "<group>"; };
+		D2A5D8ED1C1BF24E00CDBF7A /* libnlopt.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libnlopt.a; sourceTree = "<group>"; };
 		D2E4E3EE1C15167D00CF4A2A /* point.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = point.c; sourceTree = "<group>"; };
 		D2E4E3EF1C15167D00CF4A2A /* point.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = point.h; sourceTree = "<group>"; };
 		D2E4E3F11C1520E400CF4A2A /* list.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = list.c; path = Util/list.c; sourceTree = "<group>"; };
@@ -56,15 +64,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2A5D8EE1C1BF24E00CDBF7A /* libnlopt.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D2A5D8E81C1BEA3B00CDBF7A /* Optimization Framework */ = {
+			isa = PBXGroup;
+			children = (
+				D2A5D8E91C1BEAF200CDBF7A /* nlopt.h */,
+				D2A5D8ED1C1BF24E00CDBF7A /* libnlopt.a */,
+			);
+			name = "Optimization Framework";
+			sourceTree = "<group>";
+		};
 		D2F16A7E1C0161BB00F1D41C = {
 			isa = PBXGroup;
 			children = (
+				D2A5D8EB1C1BF19000CDBF7A /* libnlopt.la */,
+				D2A5D8E81C1BEA3B00CDBF7A /* Optimization Framework */,
 				D2F16A891C0161BB00F1D41C /* AI2048Solver */,
 				D2F16A881C0161BB00F1D41C /* Products */,
 			);
@@ -95,6 +115,8 @@
 				D2E4E3F51C15216400CF4A2A /* move.h */,
 				D2E4E3F71C15557A00CF4A2A /* heuristics.c */,
 				D2E4E3F81C15557A00CF4A2A /* heuristics.h */,
+				D2A5D8E11C1A1D0C00CDBF7A /* optimization.c */,
+				D2A5D8E21C1A1D0C00CDBF7A /* optimization.h */,
 			);
 			path = AI2048Solver;
 			sourceTree = "<group>";
@@ -166,10 +188,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2A5D8EA1C1BEAF200CDBF7A /* nlopt.h in Sources */,
 				D2E4E3F01C15167D00CF4A2A /* point.c in Sources */,
 				D2008E3C1C0E7F0D008CC0B7 /* game.c in Sources */,
 				D2F16A941C0162B400F1D41C /* board.c in Sources */,
 				D222902C1C04D606000EE872 /* 2048.c in Sources */,
+				D2A5D8E31C1A1D0C00CDBF7A /* optimization.c in Sources */,
 				D2E4E3F31C1520E400CF4A2A /* list.c in Sources */,
 				D2F16A971C01631200F1D41C /* num_util.c in Sources */,
 				D2E4E3F61C15216400CF4A2A /* move.c in Sources */,
@@ -263,6 +287,10 @@
 		D2F16A8F1C0161BB00F1D41C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -271,6 +299,10 @@
 		D2F16A901C0161BB00F1D41C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
