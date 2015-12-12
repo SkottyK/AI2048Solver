@@ -10,7 +10,6 @@
 		D2008E3C1C0E7F0D008CC0B7 /* game.c in Sources */ = {isa = PBXBuildFile; fileRef = D2008E3A1C0E7F0D008CC0B7 /* game.c */; };
 		D222902C1C04D606000EE872 /* 2048.c in Sources */ = {isa = PBXBuildFile; fileRef = D222902A1C04D606000EE872 /* 2048.c */; };
 		D2A5D8E31C1A1D0C00CDBF7A /* optimization.c in Sources */ = {isa = PBXBuildFile; fileRef = D2A5D8E11C1A1D0C00CDBF7A /* optimization.c */; };
-		D2A5D8EA1C1BEAF200CDBF7A /* nlopt.h in Sources */ = {isa = PBXBuildFile; fileRef = D2A5D8E91C1BEAF200CDBF7A /* nlopt.h */; };
 		D2A5D8EE1C1BF24E00CDBF7A /* libnlopt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2A5D8ED1C1BF24E00CDBF7A /* libnlopt.a */; };
 		D2E4E3F01C15167D00CF4A2A /* point.c in Sources */ = {isa = PBXBuildFile; fileRef = D2E4E3EE1C15167D00CF4A2A /* point.c */; };
 		D2E4E3F31C1520E400CF4A2A /* list.c in Sources */ = {isa = PBXBuildFile; fileRef = D2E4E3F11C1520E400CF4A2A /* list.c */; };
@@ -188,7 +187,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D2A5D8EA1C1BEAF200CDBF7A /* nlopt.h in Sources */,
 				D2E4E3F01C15167D00CF4A2A /* point.c in Sources */,
 				D2008E3C1C0E7F0D008CC0B7 /* game.c in Sources */,
 				D2F16A941C0162B400F1D41C /* board.c in Sources */,

@@ -40,10 +40,10 @@ void print_game(Game g) {
     printf("Score: %d\n", g->score);
     print_board(g->board);
     printf("Heuristic:\n");
-    printf("     Up: %d\n", estimate_move(g, Up));
-    printf("   Down: %d\n", estimate_move(g, Down));
-    printf("   Left: %d\n", estimate_move(g, Left));
-    printf("  Right: %d\n", estimate_move(g, Right));
+    printf("     Up: %f\n", estimate_move(g, Up));
+    printf("   Down: %f\n", estimate_move(g, Down));
+    printf("   Left: %f\n", estimate_move(g, Left));
+    printf("  Right: %f\n", estimate_move(g, Right));
 }
 
 void make_move(Game g, Move m) {
@@ -62,11 +62,11 @@ Game test_move(Game og, Move m) {
     return NULL;
 }
 
-int estimate_move(Game g, Move m) {
+double estimate_move(Game g, Move m) {
     if (is_effectual_move(g->board, m)) {
         Board b = board_cpy(g->board);
         shift(b, m);
-        int hval = g->h(b);
+        double hval = g->h(b);
         free(b);
         return hval;
     }

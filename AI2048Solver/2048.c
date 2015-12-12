@@ -44,7 +44,7 @@ int play2048(Game g) {
         }
         int i;
         Move bestMove = moves[0];
-        int bestHeur = 0;
+        double bestHeur = 0;
         for (i = 0; i < size; i++) {
             Game test = test_move(g, moves[i]);
             PointList pl = open_spaces(test->board);
@@ -54,16 +54,16 @@ int play2048(Game g) {
                 continue;
             }
             listNode *node = pl->points.head;
-            int maxheur = 0;
+            double maxheur = 0;
             while (node != NULL) {
                 Board cpy = board_cpy(test->board);
                 Board cpy2 = board_cpy(test->board);
                 Point p = (Point)node->data;
                 place(cpy,p->r, p->c, 2);
-                int twoheur = (*(test->h))(cpy);
+                double twoheur = (*(test->h))(cpy);
                 place(cpy2, p->r, p->c, 4);
-                int fourheur = (*(test->h))(cpy2);
-                int heur = twoheur > fourheur ? twoheur : fourheur;
+                double fourheur = (*(test->h))(cpy2);
+                double heur = twoheur > fourheur ? twoheur : fourheur;
                 maxheur = maxheur > heur ? maxheur : heur;
                 node = node->next;
                 free_board(cpy);

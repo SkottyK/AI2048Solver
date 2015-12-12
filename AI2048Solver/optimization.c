@@ -22,15 +22,15 @@ typedef struct custom_data {
 
 double theta[DIM];
 int runs = 0;
-int theta_weight(Board b) {
-    int sum = 0;
+double theta_weight(Board b) {
+    double sum = 0;
     for (int r=0; r<BOARDSIZE; r++) {
         for (int c=0; c<BOARDSIZE; c++) {
             int this = bget(b, r, c);
             sum += (double)(this * this) * theta[r * BOARDSIZE + c];
         }
     }
-    return (int)(sum * 100);
+    return sum;
 }
 
 

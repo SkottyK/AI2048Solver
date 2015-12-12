@@ -10,9 +10,8 @@
 #define game_h
 
 #include "board.h"
+#include "heuristics.h"
 #include "move.h"
-
-typedef int (*Heuristic)(Board B);
 
 typedef struct game_data {
     Heuristic h;
@@ -26,7 +25,7 @@ void game_free(Game g);
 
 void make_move(Game g, Move m);
 Game test_move(Game g, Move m);
-int estimate_move(Game g, Move m);
+double estimate_move(Game g, Move m);
 void print_game(Game g);
 
 #endif /* game_h */
