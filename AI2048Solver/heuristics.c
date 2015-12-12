@@ -60,5 +60,7 @@ int empty_blocks(Board b) {
     if (pl == NULL) {
         return 0;
     }
-    return pl->N;
+    int num_blocks = pl->N;
+    pl_free(pl);
+    return num_blocks;
 }

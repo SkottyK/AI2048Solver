@@ -77,6 +77,7 @@ void place_rand(Board b) {
         return;
     }
     place(b, p->r, p->c, two_or_four());
+    pl_free(pl);
 }
 
 PointList open_spaces(Board b) {
@@ -113,8 +114,10 @@ int is_effectual_move(Board b, Move m) {
             }
         }
         for (int c=0; c<BOARDSIZE; c++) {
-            if (bget(tmp, r, c) != data[BOARDSIZE-1-c])
+            if (bget(tmp, r, c) != data[BOARDSIZE-1-c]) {
+                free_board(tmp);
                 return 1;
+            }
         }
     }
     free_board(tmp);

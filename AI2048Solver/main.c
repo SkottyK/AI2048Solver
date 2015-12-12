@@ -12,9 +12,9 @@
 #include <time.h>
 #include "2048.h"
 #include "board.h"
-#include "point.h"
 #include "game.h"
-
+#include "optimization.h"
+#include "point.h"
 
 
 int test_rotate() {
@@ -219,16 +219,18 @@ int test_copy() {
 
 int main(int argc, const char * argv[]) {
     srand((unsigned)time(NULL));
-/*
-    test_rotate();
 
-    test_shift();
+//    test_rotate();
 
-    test_copy();
+//    test_shift();
 
-    human_game();
-*/
+//    test_copy();
 
-    test_suite(argc, argv);
+//    human_game();
+
+//    test_suite(argc, argv);
+
+    optimize_score(100);
+
     return 0;
 }

@@ -31,24 +31,28 @@ void print_commands() {
 
 
 int play2048(Game g) {
-    int* size = (int*)malloc(sizeof(int));
+    int size;
     while(!is2048(g->board)) {
         //print_board(g->board);
-        Move* moves = effectual_moves(g->board, size);
-        //printf("num_moves %d\n", *size);
-        if (moves == NULL || *size == 0) {
-            //printf("No more moves, game over!\n");
-            return g->score;
+        Move* moves = effectual_moves(g->board, &size);
+        // Test end conditions
+        if (moves == NULL)
+            break;
+        if (size == 0) {
+            free(moves);
             break;
         }
         int i;
         Move bestMove = moves[0];
         int bestHeur = 0;
-        for (i = 0; i < *size; i++) {
+        for (i = 0; i < size; i++) {
             Game test = test_move(g, moves[i]);
             PointList pl = open_spaces(test->board);
-            if (pl->N == 0) //This should never happen
+            if (pl->N == 0) {//This should never happen
+                game_free(test);
+                pl_free(pl);
                 continue;
+            }
             listNode *node = pl->points.head;
             int maxheur = 0;
             while (node != NULL) {
@@ -75,7 +79,6 @@ int play2048(Game g) {
         make_move(g, bestMove);
         free(moves);
     }
-    free(size);
     return g->score;
 }
 
@@ -137,9 +140,11 @@ void human_game() {
             default:
                 break;
         }
-        if (pl_empty(open_spaces(g->board))) {
+        PointList pl = open_spaces(g->board);
+        if (pl_empty(pl)) {
             playing = 0;
         }
+        pl_free(pl);
     }
     print_game(g);
     printf("Game Over! Final Score: %d\n", g->score);
@@ -147,9 +152,11 @@ void human_game() {
 
 void test_random(int *score, int *maxtile) {
     Game g = init_game(squaresum_heuristic);
-    while (!pl_empty(open_spaces(g->board))) {
+    PointList pl = open_spaces(g->board);
+    while (!pl_empty(pl)) {
         make_move(g, (Move)randint(4));
     }
+    pl_free(pl);
     *score = g->score;
     *maxtile = max_tile(g->board);
     game_free(g);
@@ -158,7 +165,7 @@ void test_random(int *score, int *maxtile) {
 void test_heuristic(Heuristic h, int *score, int *maxtile) {
     Game g = init_game(h);
     *score = play2048(g);
-    *maxtile = max_tile(g->board);
+    //*maxtile = max_tile(g->board);
     game_free(g);
 }
 

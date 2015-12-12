@@ -29,8 +29,6 @@ void list_destroy(list *list)
         if(list->freeFn) {
             list->freeFn(current->data);
         }
-
-        free(current->data);
         free(current);
     }
 }
