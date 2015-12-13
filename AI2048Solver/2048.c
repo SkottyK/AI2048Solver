@@ -27,18 +27,26 @@ void print_commands() {
     printf("\n\nGood Luck!\n\n");
 }
 
+#define NUM_PLY 1
+//Applies NUM_PLY number of plys
+Move ply(Game g) {
+    Board b = g->board;
+    int* size = (int*)malloc(sizeof(int));
+    Move* moves = effectual_moves(b, size);
+    if (moves == NULL || *size == 0)
+        return g->score;
+    int i;
+    
+    free(size);
+    return moves[0];
+}
 
 int play2048(Game g) {
     int* size = (int*)malloc(sizeof(int));
     while(!is2048(g->board)) {
-        //print_board(g->board);
         Move* moves = effectual_moves(g->board, size);
-        //printf("num_moves %d\n", *size);
-        if (moves == NULL || *size == 0) {
-            //printf("No more moves, game over!\n");
+        if (moves == NULL || *size == 0)
             return g->score;
-            break;
-        }
         int i;
         Move bestMove = moves[0];
         int bestHeur = 0;
