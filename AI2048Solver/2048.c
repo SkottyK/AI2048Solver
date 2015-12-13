@@ -6,6 +6,8 @@
 //  Copyright © 2015 Scott Krulcik. All rights reserved.
 //
 #include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
 #include "list.h"
 #include "2048.h"
 #include "board.h"
@@ -42,44 +44,80 @@ Move ply(Game g) {
 }
 
 int play2048(Game g) {
-    int* size = (int*)malloc(sizeof(int));
+    int size;
     while(!is2048(g->board)) {
         Move* moves = effectual_moves(g->board, size);
         if (moves == NULL || *size == 0)
             return g->score;
         int i;
         Move bestMove = moves[0];
-        int bestHeur = 0;
-        for (i = 0; i < *size; i++) {
+        double bestHeur = 0;
+        for (i = 0; i < size; i++) {
             Game test = test_move(g, moves[i]);
             PointList pl = open_spaces(test->board);
-            if (pl->N == 0) //This should never happen
+            if (pl->N == 0) {//This should never happen
+                game_free(test);
+                pl_free(pl);
                 continue;
+            }
             listNode *node = pl->points.head;
-            int maxheur = 0;
+            double maxheur = 0;
             while (node != NULL) {
                 Board cpy = board_cpy(test->board);
                 Board cpy2 = board_cpy(test->board);
                 Point p = (Point)node->data;
                 place(cpy,p->r, p->c, 2);
-                int twoheur = (*(test->h))(cpy);
+                double twoheur = (*(test->h))(cpy);
                 place(cpy2, p->r, p->c, 4);
-                int fourheur = (*(test->h))(cpy2);
-                int heur = twoheur > fourheur ? twoheur : fourheur;
+                double fourheur = (*(test->h))(cpy2);
+                double heur = twoheur > fourheur ? twoheur : fourheur;
                 maxheur = maxheur > heur ? maxheur : heur;
                 node = node->next;
+                free_board(cpy);
+                free_board(cpy2);
             }
             if (maxheur > bestHeur) {
                 bestHeur = maxheur;
                 bestMove = moves[i];
             }
+            game_free(test);
+            pl_free(pl);
         }
         make_move(g, bestMove);
-        
+        free(moves);
     }
-    free(size);
     return g->score;
 }
+
+
+int playExpected2048(Game g, int depth) {
+    int size;
+    while(!is2048(g->board)) {
+        Move* moves = effectual_moves(g->board, &size);
+        // Test end conditions
+        if (moves == NULL)
+            break;
+        if (size == 0) {
+            free(moves);
+            break;
+        }
+        int i;
+        Move bestMove = moves[0];
+        double bestE = 0;
+        for (i = 0; i < size; i++) {
+            double E = expected_value(g, moves[i], depth);
+            if (E > bestE) {
+                bestMove = moves[i];
+                bestE = E;
+            }
+        }
+        make_move(g, bestMove);
+        free(moves);
+    }
+    return g->score;
+}
+
+
 
 void human_game() {
     printf("Welcome to 2048!\n");
@@ -139,32 +177,96 @@ void human_game() {
             default:
                 break;
         }
-        if (pl_empty(open_spaces(g->board))) {
+        PointList pl = open_spaces(g->board);
+        if (pl_empty(pl)) {
             playing = 0;
         }
+        pl_free(pl);
     }
     print_game(g);
     printf("Game Over! Final Score: %d\n", g->score);
 }
 
-void baseline(int num_tests) {
-    int scores[num_tests];
-    int scores2[num_tests];
+void test_random(int *score, int *maxtile) {
+    Game g = init_game(squaresum_heuristic);
+    PointList pl = open_spaces(g->board);
+    while (!pl_empty(pl)) {
+        make_move(g, (Move)randint(4));
+    }
+    pl_free(pl);
+    *score = g->score;
+    *maxtile = max_tile(g->board);
+    game_free(g);
+}
+
+void test_minimax(Heuristic h, int *score, int *maxtile) {
+    Game g = init_game(h);
+    *score = play2048(g);
+    //*maxtile = max_tile(g->board);
+    game_free(g);
+}
+void test_expectation(Heuristic h, int depth, int *score, int *maxtile) {
+    Game g= init_game(h);
+    *score = playExpected2048(g, depth);
+    //*maxtile = max_tile(g->board);
+    game_free(g);
+}
+
+void test_suite(int argc, const char *argv[]) {
+    long num_tests = 100;
+    FILE *score_file = stdout;
+    FILE *tile_file = stdout;
+    if (argc > 1) {
+        // First argument should be number of trials
+        num_tests = strtol(argv[1], NULL, 10);
+        if (argc > 2) {
+            const char *score_filename = argv[2];
+            if ((score_file = fopen(score_filename, "w")) == NULL) {
+                printf("Error: Could not open score file\n");
+                exit(1);
+            }
+            if (argc > 3) {
+                const char *score_filename = argv[3];
+                if ((tile_file = fopen(score_filename, "w")) == NULL) {
+                    printf("Error: Could not open max tile file\n");
+                    exit(1);
+                }
+            }
+        }
+    }
+    const char *f_labels = "Squaresum,Empty Blocks,Sequential Weight,Weight RC";
+    Heuristic h_functions[] = {
+        squaresum_heuristic,
+        empty_blocks,
+        weighted_sum1,
+        weighted_sum2
+    };
+    int num_funcs = 4;
+    int scores[num_funcs+1][num_tests];
+    int mtiles[num_funcs+1][num_tests];
 
     for (int i=0; i < num_tests; i++) {
-        Game g = init_game(squaresum_heuristic);
-        Game g2 = game_cpy(g);
-        while (!pl_empty(open_spaces(g->board))) {
-            make_move(g, (Move)randint(4));
+        test_random(&scores[0][i], &mtiles[0][i]);
+        for (int h=0; h<num_funcs; h++) {
+            test_minimax(h_functions[h], &scores[1+h][i], &mtiles[1+h][i]);
         }
-        scores[i] = g->score;
-        scores2[i] = play2048(g2);
     }
 
-    for (int i = 0; i < num_tests; i++) {
-        printf("%d, %d\n", scores[i], scores2[i]);
+    fprintf(score_file, "Baseline,%s\n", f_labels);
+    for (int i=0; i < num_tests; i++) {
+        for (int j=0; j < num_funcs + 1; j++) {
+            fprintf(score_file, "%d%s", scores[j][i], (j==num_funcs)?"\n":",");
+        }
     }
-    printf("\n\n");
+    printf("\n");
+
+    fprintf(tile_file, "Baseline,%s\n", f_labels);
+    for (int i=0; i < num_tests; i++) {
+        for (int j=0; j < num_funcs + 1; j++) {
+            fprintf(tile_file, "%d%s", mtiles[j][i], (j==num_funcs)?"\n":",");
+        }
+    }
+    printf("\n");
 }
 
 

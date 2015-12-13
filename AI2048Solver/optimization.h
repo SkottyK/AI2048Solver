@@ -1,0 +1,22 @@
+//
+//  optimization.h
+//  AI2048Solver
+//
+//  Created by Scott Krulcik on 12/10/15.
+//  Copyright © 2015 Scott Krulcik. All rights reserved.
+//
+
+#ifndef optimization_h
+#define optimization_h
+
+#include <stdlib.h>
+#include "board.h"
+
+typedef struct opt_data {
+    int theta[BOARDSIZE * BOARDSIZE];
+    float average;
+} opt_data;
+
+opt_data *optimize_score(int num_iterations);
+
+#endif /* optimization_h */

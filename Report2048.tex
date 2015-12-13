@@ -1,0 +1,244 @@
+\documentclass[11pt]{article}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{amsmath, amsfonts, amsthm, amssymb}
+\usepackage[left=.75 in, right=.75 in,top=.85 in, bottom=.75 in]{geometry}
+\usepackage{scrextend}
+\usepackage{courier} %In-line code (See convenience command \ml)
+\usepackage{listings} %Code snippets
+\usepackage{xcolor} %Syntax highlighting (and text coloring)
+\usepackage{tikz} %State machine drawings
+
+\setlength{\headheight}{13.6pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+
+
+%----------------------------------------- GPI Commands -----------------------------------------
+\def\indented#1{\list{}{}\item[]}
+\let\indented=\endlist
+%Question and Part Counter
+\newcounter{questionCounter}
+\newcounter{partICounter}%[questionCounter]
+\newcounter{partACounter}%[partICounter]
+\newcounter{partnCounter}%[partACounter]
+\newcounter{partaCounter}%[partnCounter]
+\newcounter{partiCounter}%[partCounter]
+\newcounter{partCounter}[questionCounter]
+\newenvironment{question}[2][\arabic{questionCounter}]{%Original Version from GPI Template
+    \setcounter{partCounter}{0}%
+    \setcounter{partICounter}{0}
+    \setcounter{partACounter}{0}
+    \setcounter{partnCounter}{0}
+    \setcounter{partaCounter}{0}
+    \setcounter{partiCounter}{0}
+    \vspace{.25in} \hrule \vspace{0.5em}%
+        \noindent{\bf #2}%
+    \vspace{0.8em} \hrule \vspace{.10in}%
+    \addtocounter{questionCounter}{1}%
+}{}
+\renewenvironment{part}[1][\alph{partCounter}]{%riginal Version from GPI Template
+    \addtocounter{partCounter}{1}%
+    \vspace{.10in}%
+    \begin{indented}%
+       {\bf (#1)} %
+}{\end{indented}}
+
+
+%Customized for other counters:
+%Roman Numeral
+\newenvironment{partI}[1][\Roman{partICounter}]{
+    \addtocounter{partICounter}{1}
+    \setcounter{partACounter}{0}
+    \setcounter{partnCounter}{0}
+    \setcounter{partaCounter}{0}
+    \setcounter{partiCounter}{0}
+    \vspace{.10in}
+    \block
+       {\bf (#1)} 
+}{\endblock}
+%Uppercase Letters
+\newenvironment{partA}[1][\Alph{partACounter}]{
+    \addtocounter{partACounter}{1}
+    \setcounter{partnCounter}{0}
+    \setcounter{partaCounter}{0}
+    \setcounter{partiCounter}{0}
+    \vspace{.10in}
+    \block
+       {\bf (#1)} 
+}{\endblock}
+% Numeric
+\newenvironment{partn}[1][\arabic{partnCounter}]{
+    \addtocounter{partnCounter}{1}
+    \setcounter{partaCounter}{0}
+    \setcounter{partiCounter}{0}
+    \vspace{.10in}
+    \block
+       {\bf (#1)} 
+}{\endblock}
+%Small alpha
+\newenvironment{parta}[1][\alph{partaCounter}]{%Original Version from GPI Template
+    \addtocounter{partaCounter}{1}
+    \setcounter{partiCounter}{0}
+    \vspace{.10in}
+    \block
+       {\bf (#1)} 
+}{\endblock}
+%Small Roman Numeral
+\newenvironment{parti}[1][\roman{partiCounter}]{
+    \addtocounter{partiCounter}{1}
+    \vspace{.10in}
+    \block
+       {\bf (#1)} 
+}{\endblock}
+
+%--------------------------------------------- Code Setup ------------------------------------------------
+\lstdefinestyle{ERR}{
+     belowcaptionskip=1\baselineskip,
+     breaklines=true,
+     frame=L,
+     xleftmargin=4em,
+     xrightmargin=4em,
+     language=ML,
+     showstringspaces=false,
+     basicstyle=\footnotesize\ttfamily\color{red},
+     keywordstyle=\color{red},
+     commentstyle=\color{red},
+     identifierstyle=\color{red},
+     stringstyle=\color{red},
+}
+
+\lstdefinestyle{SML}{
+     belowcaptionskip=1\baselineskip,
+     breaklines=true,
+     frameround=tttt,
+     frame=trbl,
+     xleftmargin= 2em,
+     xrightmargin= 3em,
+     language=ML,
+     escapeinside={!}{!},
+     showstringspaces=false,
+     basicstyle=\footnotesize\ttfamily,
+     keywordstyle=\bfseries\color{green!40!black},
+     commentstyle=\itshape\color{purple!40!black},
+     identifierstyle=\color{blue},
+     stringstyle=\color{orange},
+}
+\lstdefinestyle{C}{
+     belowcaptionskip=1\baselineskip,
+     breaklines=true,
+     frameround=tttt,
+     frame=trbl,
+     xleftmargin= 2em,
+     xrightmargin= 3em,
+     language=C,
+     escapeinside={!}{!},
+     showstringspaces=false,
+     basicstyle=\footnotesize\ttfamily,
+     keywordstyle=\bfseries\color{green!40!black},
+     commentstyle=\itshape\color{purple!40!black},
+     identifierstyle=\color{blue},
+     stringstyle=\color{orange},
+}
+\lstdefinestyle{Python}{
+     belowcaptionskip=1\baselineskip,
+     breaklines=true,
+     frameround=tttt,
+     frame=trbl,
+     xleftmargin= 2em,
+     xrightmargin= 3em,
+     language=Python,
+     escapeinside={!}{!},
+     showstringspaces=false,
+     basicstyle=\footnotesize\ttfamily,
+     keywordstyle=\bfseries\color{green!40!black},
+     commentstyle=\itshape\color{purple!40!black},
+     identifierstyle=\color{blue},
+     stringstyle=\color{orange},
+}
+
+
+
+%----------------------------------------- Custom Commands -----------------------------------------
+% Phonetic Replacements
+\providecommand{\nset}{\varnothing}	%NULL set
+\providecommand{\imply}{\Rightarrow}
+\providecommand{\equiv}{\Leftrightarrow}
+\providecommand{\inv}{^{-1}}
+\providecommand{\abs}[1]{\left\vert#1\right\vert}
+\providecommand{\norm}[1]{\left\Vert#1\right\Vert}
+\providecommand{\dif}[2]{\frac{d}{d#2}\left(#1\right)}
+\providecommand{\st}{\text{ s.t. }}
+\providecommand{\tick}[1]{\ml{'#1}}
+% SML
+\providecommand{\SML}{\lstset{escapechar=@,style=SML}}
+\providecommand{\ml}[1]{\texttt{#1}}
+\providecommand{\mlneg}{$\sim$}
+\providecommand{\eval}{$\Longrightarrow$}
+\providecommand{\eq}{$\cong$ }
+\providecommand{\bigO}[1]{\mathcal{O}({#1})}
+% C
+\providecommand{\C}{\lstset{escapechar=@,style=C}}
+\providecommand{\c}[1]{\texttt{#1}}
+% Python
+\providecommand{\Py}{\lstset{escapechar=@,style=Python}}
+\providecommand{\py}[1]{\texttt{#1}}
+% Errors
+\providecommand{\Error}{\lstset{escapechar=@,style=ERR}}
+
+%Greek
+\def\ep{\varepsilon}
+
+%imaginary
+\def\i{\mathcal{i}}
+
+%Structure
+\def\tab{\;\;\;\;}
+\def\block{\begin{addmargin}[2em]{0em}}
+\def\endblock{\end{addmargin}}
+
+%Personal Info
+\newcommand{\myname}{Scott Krulcik $\cdot$ Steve Bunting}
+\newcommand{\myshortname}{Krulcik $\cdot$ Bunting}
+\newcommand{\myandrew}{skrulcik $\cdot$ sbunting}
+\newcommand{\myhwname}{15-381 Term Project}
+\newcommand{\myreportname}{2048: AI Player and Heuristic Optimization}
+
+%Set header
+\pagestyle{fancyplain}
+\lhead{\fancyplain{}{\myshortname}}
+\chead{\fancyplain{}{\myreportname}}
+\rhead{\fancyplain{}{\thepage}}
+\cfoot{}
+
+\begin{document}
+%Remove Header on First Page
+\thispagestyle{plain}
+\begin{center}
+\textbf{{\huge \myreportname \hrule}} 
+{\Large \myname \\
+\myhwname }\\
+\end{center}
+\C % Macro to set language in lstlisting to C
+% Steve: If you want to put in code, I have lstlisting configured for C syntax highlighting:
+%\begin{lstlisting}
+%#include <stdlib.h>
+%#include <stdio.h>
+%
+%int main(){
+%	printf("Salutations, Globe");
+%	return 0;
+%}
+%\end{lstlisting}
+%
+
+
+This is a term project. I'm still not even sure if "heuristic" is the right term. It might be more correct to say "estimation function" but I feel like they know what we mean.
+\newpage
+About Stuff
+
+
+
+
+\end{document}

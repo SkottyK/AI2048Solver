@@ -13,10 +13,10 @@
 #include "game.h"
 
 /* Play game on command line */
-int play2048(Game g);
-
 void human_game();
 
-void baseline(int num_trials);
+void test_suite(int argc, const char *argv[]);
+void test_minimax(Heuristic h, int *score, int *maxtile);
+void test_expectation(Heuristic h, int depth, int *score, int *maxtile);
 
 #endif /* _048_h */

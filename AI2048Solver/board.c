@@ -77,6 +77,7 @@ void place_rand(Board b) {
         return;
     }
     place(b, p->r, p->c, two_or_four());
+    pl_free(pl);
 }
 
 PointList open_spaces(Board b) {
@@ -113,8 +114,10 @@ int is_effectual_move(Board b, Move m) {
             }
         }
         for (int c=0; c<BOARDSIZE; c++) {
-            if (bget(tmp, r, c) != data[BOARDSIZE-1-c])
+            if (bget(tmp, r, c) != data[BOARDSIZE-1-c]) {
+                free_board(tmp);
                 return 1;
+            }
         }
     }
     free_board(tmp);
@@ -127,6 +130,15 @@ int is2048(Board b) {
             if (bget(b, r, c) == 2048)
                 return 1;
     return 0;
+}
+
+int max_tile(Board b) {
+    int max = 0;
+    for (int r=0; r<BOARDSIZE; r++)
+        for (int c=0; c<BOARDSIZE; c++)
+            if (bget(b, r, c) > max)
+                max = bget(b, r, c);
+    return max;
 }
 
 Move *effectual_moves(Board b, int *size) {

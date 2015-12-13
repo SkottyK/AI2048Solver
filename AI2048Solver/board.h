@@ -31,6 +31,7 @@ PointList open_spaces(Board b);
 Move *effectual_moves(Board b, int *size);
 int is_effectual_move(Board b, Move m);
 int is2048(Board b);
+int max_tile(Board b);
 int shift(Board b, Move m);
 
 void print_board(Board b);

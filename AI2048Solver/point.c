@@ -26,9 +26,6 @@ int pt_eqrc(Point p, int r, int c) {
 /****************************************
  * Point List
  ****************************************/
-
-
-
 PointList pl_create() {
     PointList pl = malloc(sizeof(struct point_list_data));
     pl->N = 0;
@@ -36,7 +33,7 @@ PointList pl_create() {
     return pl;
 }
 void pl_free(PointList pl) {
-    list_destroy(&(pl->points));
+    list_destroy(&pl->points);
     free(pl);
 }
 
@@ -64,6 +61,7 @@ void pl_insert(PointList pl, int r, int c) {
     p->r = r;
     p->c = c;
     list_prepend(&pl->points, (void *)p);
+    free(p);
     pl->N++;
 }
 

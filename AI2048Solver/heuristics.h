@@ -10,9 +10,14 @@
 #define heuristics_h
 
 #include <stdio.h>
-#include "game.h"
+#include "board.h"
 
-int sum_heuristic(Board b);
-int squaresum_heuristic(Board b);
+typedef double (*Heuristic)(Board B);
+
+double sum_heuristic(Board b);
+double squaresum_heuristic(Board b);
+double weighted_sum1(Board b);
+double weighted_sum2(Board b);
+double empty_blocks(Board b);
 
 #endif /* heuristics_h */
