@@ -18,5 +18,6 @@ typedef struct opt_data {
 } opt_data;
 
 opt_data *optimize_score(int num_iterations);
+opt_data *grid_opt(int num_iterations);
 
 #endif /* optimization_h */
