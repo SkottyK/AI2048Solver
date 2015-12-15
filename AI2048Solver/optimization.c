@@ -46,7 +46,8 @@ double average_score(unsigned n, const double *theta, double *grad, void* f_data
     }
 
     runs++;
-    printf("%d,%.3f\n", runs, average);
+    if (!(runs % 1000))
+        printf("%d,%.3f\n", runs, average);
 
     return average;
 }
@@ -86,6 +87,63 @@ double sum0(unsigned n, const double *theta, double *grad, void *f_data) {
 }
 
 
+opt_data *grid_opt(int num_iterations) {
+    double start[DIM], step = 1.0;
+    int mods[DIM], avgidx[DIM], num_samples = 3, num_shrinks = 3;
+    int max_count = (int)pow(DIM, num_samples);
+    double average[DIM][num_samples];
+    custom_data function_data;
+    function_data.num_iterations = num_iterations;
+
+    memset(&theta, 0x0, DIM);
+
+    for (int i = 0; i < DIM; i++)
+        start[i] = -1.0;
+    mods[0] = num_samples;
+    for (int i = 1; i < DIM; i++)
+        mods[i] = mods[i-1] * num_samples;
+
+    for (int i = 0; i < num_shrinks; i++) {
+        for (int counter = 0; counter < max_count; counter++) {
+            for (int j = 0; j < DIM; j++) {
+                if (counter % mods[j] == 0) {
+                    avgidx[j] = (avgidx[j] + 1) % num_samples;
+                    theta[j] += step;
+                }
+                average[j][avgidx[j]] = average_score(DIM, theta, NULL, &function_data) / ((double)counter);
+            }
+        }
+        for (int j = 0; j < DIM; j++) {
+            double subavg[num_samples - 1];
+            memset(subavg, 0, num_samples - 1);
+            for (int k = 0; k < num_samples - 1; k++) {
+                subavg[k] += average[j][k] / ((double)num_samples - 1);
+            }
+            double max = 0.0;
+            int best_start = 0;
+            for (int k = 0; k < num_samples -1 ; k++) {
+                if (subavg[k] > max) {
+                    best_start = k;
+                    max = subavg[k];
+                }
+            }
+            start[j] = start[j] + (double)best_start * step;
+        }
+        step /= 2.0;
+        printf("Start:\n[");
+        for (int j = 0; j < DIM; j++)
+            printf(" %5.3f", start[j]);
+        printf("]\n");
+    }
+    double avgall = 0.0;
+    for (int i = 0; i < DIM; i++)
+        for (int j = 0; j < num_samples; j++)
+            avgall += average[i][avgidx[j]];
+    opt_data *data = (opt_data *)malloc(sizeof(opt_data));
+    data->average = avgall;
+    memcpy(&data->theta, &theta, DIM);
+    return data;
+}
 
 
 opt_data *optimize_score(int num_iterations) {
