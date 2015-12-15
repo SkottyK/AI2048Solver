@@ -34,7 +34,7 @@ void free_game_list(void* A) {
     game_free(G);
 }
 
-#define NUM_PLY 1
+#define NUM_PLY 2
 //Applies NUM_PLY number of plys
 double ply(list G, int d) {
     if (d == 0) {
@@ -111,6 +111,7 @@ double ply(list B, int d, Heuristic H) {
         listNode* node = B.head;
         double totalHeur = 0;
         while (node != NULL) {
+            printf("oh no!\n");
             Board b = (Board)node;
             totalHeur = totalHeur + (*H)(b);
             node = node->next;
@@ -119,27 +120,29 @@ double ply(list B, int d, Heuristic H) {
         
     }
     list B2;
-    list_new(&B2, sizeof(Board), free_board_list);
+    list_new(&B2, sizeof(Board), free);
     listNode* node = B.head;
     //printf("here\n");
     while (node != NULL) {
         Board b = (Board)(node->data);
         PointList pl = open_spaces(b);
         //print_board(b);
-        //printf("%i\n", pl->N);
+        printf("%i\n", pl->N);
         if (pl->N == 0) {
             pl_free(pl);
+            node = node->next;
             continue;
         }
         listNode* n = pl->points.head;
-        //printf("hello\n");
+        printf("hello\n");
         while (n != NULL) {
+            printf("nope\n");
             Board b2 = board_cpy(b);
             Board b4 = board_cpy(b);
             Point p = (Point)n->data;
             place(b2, p->r, p->c, 2);
             place(b4, p->r, p->c, 4);
-            //printf("(%i, %i)\n", p->r, p->c);
+            printf("(%i, %i)\n", p->r, p->c);
             if (d == 1) {
                 list_prepend(&B2, (void*)b2);
                 list_prepend(&B2, (void*)b4);
@@ -190,7 +193,7 @@ int play2048(Game g) {
             Game test = test_move(g, moves[i]);
             //test->score = 10000;
             list B;
-            //printf("calling ply\n");
+            printf("calling ply\n");
             list_new(&B, sizeof(Board), free_board_list);
             list_prepend(&B, (void*)(test->board));
             print_board(test->board);
