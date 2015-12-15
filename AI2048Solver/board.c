@@ -151,7 +151,7 @@ Move *effectual_moves(Board b, int *size) {
         }
     }
     *size = cnt;
-    if (size == 0) {
+    if (*size == 0) {
         free(moves);
         return NULL;
     }

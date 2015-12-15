@@ -15,7 +15,6 @@
 
 Game init_game(Heuristic h) {
     Game g = (Game)malloc(sizeof(struct game_data));
-
     g->board = empty_board();
     place_rand(g->board);
     place_rand(g->board);
@@ -106,6 +105,7 @@ double expected_value(Game g, Move m, int n) {
         return -HUGE_VAL;
     }
 }
+
 
 
 

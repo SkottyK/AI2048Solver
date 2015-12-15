@@ -15,6 +15,8 @@
 /* Play game on command line */
 void human_game();
 
+int play2048(Game g);
+
 void test_suite(int argc, const char *argv[]);
 void test_minimax(Heuristic h, int *score, int *maxtile);
 void test_expectation(Heuristic h, int depth, int *score, int *maxtile);

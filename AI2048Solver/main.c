@@ -229,8 +229,10 @@ int main(int argc, const char * argv[]) {
 //    human_game();
 
 //    test_suite(argc, argv);
+    
+    play2048(init_game(sum_heuristic));
 
-    optimize_score(200);
+//    optimize_score(200);
 
     return 0;
 }

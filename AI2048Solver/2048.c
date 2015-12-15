@@ -28,33 +28,179 @@ void print_commands() {
     printf("     Help: h\n");
     printf("\n\nGood Luck!\n\n");
 }
+/*
+void free_game_list(void* A) {
+    Game G = (Game)A;
+    game_free(G);
+}
 
 #define NUM_PLY 1
 //Applies NUM_PLY number of plys
-Move ply(Game g) {
-    Board b = g->board;
-    int* size = (int*)malloc(sizeof(int));
-    Move* moves = effectual_moves(b, size);
-    if (moves == NULL || *size == 0)
-        return g->score;
-    int i;
-    
-    free(size);
-    return moves[0];
+double ply(list G, int d) {
+    if (d == 0) {
+        listNode* node = G.head;
+        double totalHeur = 0;
+        while (node != NULL) {
+            Game g = (Game)node;
+            totalHeur = totalHeur + ((*(g->h))(g->board));
+        }
+        return (totalHeur / G.logicalLength);
+        
+    }
+    list G2;
+    list_new(&G2, sizeof(Game), free_game_list);
+    listNode* node = G.head;
+    while (node != NULL) {
+        Game g = (Game)(node->data);
+        Board b = g->board;
+        PointList pl = open_spaces(b);
+        if (pl->N == 0) {
+            pl_free(pl);
+            continue;
+        }
+        listNode* n = pl->points.head;
+        while (n != NULL) {
+            Game g2 = game_cpy(g);
+            Game g4 = game_cpy(g);
+            Point p = (Point)node->data;
+            place(g2->board, p->r, p->c, 2);
+            place(g4->board, p->r, p->c, 4);
+            if (d == 1) {
+                list_prepend(&G2, (void*)g2);
+                list_prepend(&G2, (void*)g4);
+                game_free(g2);
+                game_free(g4);
+            }
+            else {
+                int size,i;
+                Move* moves2 = effectual_moves(g2->board, &size);
+                for (i=0; i < size; i++) {
+                    Game test = test_move(g2, moves2[i]);
+                    list_prepend(&G2, (void*)test);
+                    game_free(test);
+                }
+                Move* moves4 = effectual_moves(g4->board, &size);
+                for (i=0; i < size; i++) {
+                    Game test = test_move(g4, moves4[i]);
+                    list_prepend(&G2, (void*)test);
+                    game_free(test);
+                }
+                game_free(g2);
+                game_free(g4);
+            }
+            
+        }
+        pl_free(pl);
+        node = node->next;
+    }
+    double retVal = ply(G2, d-1);
+    list_destroy(&G2);
+    return retVal;
+}
+*/
+void free_board_list(void* A) {
+    Board B = (Board)A;
+    free_board(B);
+}
+
+#define NUM_PLY 1
+//Applies NUM_PLY number of plys
+double ply(list B, int d, Heuristic H) {
+    //printf("ply called\n");
+    if (d == 0) {
+        listNode* node = B.head;
+        double totalHeur = 0;
+        while (node != NULL) {
+            Board b = (Board)node;
+            totalHeur = totalHeur + (*H)(b);
+            node = node->next;
+        }
+        return (totalHeur / B.logicalLength);
+        
+    }
+    list B2;
+    list_new(&B2, sizeof(Board), free_board_list);
+    listNode* node = B.head;
+    //printf("here\n");
+    while (node != NULL) {
+        Board b = (Board)(node->data);
+        PointList pl = open_spaces(b);
+        //print_board(b);
+        //printf("%i\n", pl->N);
+        if (pl->N == 0) {
+            pl_free(pl);
+            continue;
+        }
+        listNode* n = pl->points.head;
+        //printf("hello\n");
+        while (n != NULL) {
+            Board b2 = board_cpy(b);
+            Board b4 = board_cpy(b);
+            Point p = (Point)n->data;
+            place(b2, p->r, p->c, 2);
+            place(b4, p->r, p->c, 4);
+            //printf("(%i, %i)\n", p->r, p->c);
+            if (d == 1) {
+                list_prepend(&B2, (void*)b2);
+                list_prepend(&B2, (void*)b4);
+                free_board(b2);
+                free_board(b4);
+            }
+            else {
+                int size,i;
+                Move* moves2 = effectual_moves(b2, &size);
+                for (i=0; i < size; i++) {
+                    Board cpy = board_cpy(b2);
+                    shift(cpy, moves2[i]);
+                    list_prepend(&B2, (void*)cpy);
+                    free_board(cpy);
+                }
+                Move* moves4 = effectual_moves(b4, &size);
+                for (i=0; i < size; i++) {
+                    Board cpy = board_cpy(b4);
+                    shift(cpy, moves4[i]);
+                    list_prepend(&B2, (void*)cpy);
+                    free_board(cpy);
+                }
+                free_board(b2);
+                free_board(b4);
+            }
+            n = n->next;
+        }
+        pl_free(pl);
+        node = node->next;
+    }
+    double retVal = ply(B2, d-1, H);
+    list_destroy(&B2);
+    return retVal;
 }
 
 int play2048(Game g) {
     int size;
     while(!is2048(g->board)) {
-        Move* moves = effectual_moves(g->board, size);
-        if (moves == NULL || *size == 0)
-            return g->score;
+        //print_board(g->board);
+        Move* moves = effectual_moves(g->board, &size);
+        // Test end conditions
+        if (moves == NULL)
+            break;
         int i;
         Move bestMove = moves[0];
         double bestHeur = 0;
         for (i = 0; i < size; i++) {
             Game test = test_move(g, moves[i]);
-            PointList pl = open_spaces(test->board);
+            //test->score = 10000;
+            list B;
+            //printf("calling ply\n");
+            list_new(&B, sizeof(Board), free_board_list);
+            list_prepend(&B, (void*)(test->board));
+            print_board(test->board);
+            double heur = ply(B, NUM_PLY, test->h);
+            //printf("past ply\n");
+            if (heur > bestHeur) {
+                bestHeur = heur;
+                bestMove = moves[i];
+            }
+            /*PointList pl = open_spaces(test->board);
             if (pl->N == 0) {//This should never happen
                 game_free(test);
                 pl_free(pl);
@@ -80,8 +226,8 @@ int play2048(Game g) {
                 bestHeur = maxheur;
                 bestMove = moves[i];
             }
+            */
             game_free(test);
-            pl_free(pl);
         }
         make_move(g, bestMove);
         free(moves);
@@ -213,7 +359,7 @@ void test_expectation(Heuristic h, int depth, int *score, int *maxtile) {
 }
 
 void test_suite(int argc, const char *argv[]) {
-    long num_tests = 100;
+    long num_tests = 1;
     FILE *score_file = stdout;
     FILE *tile_file = stdout;
     if (argc > 1) {
