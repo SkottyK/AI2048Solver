@@ -15,7 +15,9 @@
 
 #define BOARDSIZE 4
 
-struct board_data;
+struct board_data {
+    int *data;
+};
 typedef struct board_data *Board;
 
 Board empty_board();

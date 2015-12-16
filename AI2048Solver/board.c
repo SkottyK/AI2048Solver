@@ -19,9 +19,6 @@
 
 #define NUMCHARS 5
 
-struct board_data {
-    int *data;
-};
 Move all_moves[4] = {Up, Down, Left, Right};
 
 /**********************************************************

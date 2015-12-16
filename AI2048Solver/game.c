@@ -68,6 +68,15 @@ void make_move(Game g, Move m) {
     }
 }
 
+Game test_move_norand(Game og, Move m) {
+    if (is_effectual_move(og->board, m)) {
+        Game g = game_cpy(og);
+        g->score += shift(g->board, m);
+        return g;
+    }
+    return NULL;
+}
+
 Game test_move(Game og, Move m) {
     if (is_effectual_move(og->board, m)) {
         Game g = game_cpy(og);

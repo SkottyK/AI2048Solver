@@ -49,10 +49,10 @@ double weighted_sum2(Board b) {
     for (int r=0; r<BOARDSIZE; r++) {
         for (int c=0; c<BOARDSIZE; c++) {
             int this = bget(b, r, c);
-            sum += this * this * (r + c);
+            sum += (this * this * (r + c));
         }
     }
-    return (double)sum;
+    return ((double)sum);
 }
 
 double empty_blocks(Board b) {
