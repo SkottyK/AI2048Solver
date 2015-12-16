@@ -86,6 +86,53 @@ double sum0(unsigned n, const double *theta, double *grad, void *f_data) {
     return (sum < epsilon && sum > -epsilon) ? 0:-1;
 }
 
+opt_data *stoch_opt(int num_iterations, int num_avg) {
+    custom_data function_data;
+    function_data.num_iterations = num_avg;
+    int r_per_s = 1;
+    double start_step = 8.0;
+    double average = 0.0, step = start_step;
+
+    for (int testcount = 0; testcount < num_iterations; testcount++) {
+        int i = testcount % DIM; // Index of param to optimize
+        double *param = &(theta[i]);
+        double tests[3] = { theta[i] - step, theta[i], theta[i] + step };
+        double best_test = 0.0, best_average = 0.0;
+        for (int ti = 0; ti < 3; ti++) {
+            *param = tests[ti];
+            average = average_score(DIM, theta, NULL, &function_data);
+            if (average > best_average) {
+                best_average = average;
+                best_test = tests[ti];
+            }
+        }
+        *param = (best_test + *param) / 2;
+        average = best_average;
+
+        if (testcount % (DIM * r_per_s) == 0 && testcount != 0) {
+            step = step - (start_step / ((double)num_iterations / (DIM * r_per_s)));
+            printf("%5d [", testcount);
+            for (int idx = 0; idx < DIM; idx++) {
+                printf("%6.2f", theta[idx]);
+            }
+            printf("] %8.0f  %f\n", best_average, step);
+        }
+    }
+    printf("END [");
+    for (int idx = 0; idx < DIM; idx++) {
+        printf("%6.2f", theta[idx]);
+    }
+    printf("] %8.0f\n", average);
+
+
+
+    opt_data *data = malloc(sizeof(opt_data));
+    function_data.num_iterations = 250;
+    data->average = average_score(DIM, theta, NULL, &function_data);
+    memcpy(&data->theta, theta, DIM);
+    return data;
+}
+
 
 opt_data *grid_opt(int num_iterations) {
     double start[DIM], step = 1.0;
@@ -185,7 +232,6 @@ opt_data *optimize_score(int num_iterations) {
     memcpy(&data->theta, &theta, DIM);
     return data;
 }
-
 
 
 

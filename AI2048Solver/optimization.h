@@ -17,6 +17,7 @@ typedef struct opt_data {
     float average;
 } opt_data;
 
+opt_data *stoch_opt(int num_iterations, int num_avg);
 opt_data *optimize_score(int num_iterations);
 opt_data *grid_opt(int num_iterations);
 
