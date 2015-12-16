@@ -350,14 +350,18 @@ void test_random(int *score, int *maxtile) {
 
 void test_minimax(Heuristic h, int *score, int *maxtile) {
     Game g = init_game(h);
-    *score = play2048(g);
-    //*maxtile = max_tile(g->board);
+    if (score != NULL)
+        *score = play2048(g);
+    if (maxtile != NULL)
+        *maxtile = max_tile(g->board);
     game_free(g);
 }
 void test_expectation(Heuristic h, int depth, int *score, int *maxtile) {
     Game g= init_game(h);
-    *score = playExpected2048(g, depth);
-    //*maxtile = max_tile(g->board);
+    if (score != NULL)
+        *score = playExpected2048(g, depth);
+    if (maxtile != NULL)
+        *maxtile = max_tile(g->board);
     game_free(g);
 }
 
