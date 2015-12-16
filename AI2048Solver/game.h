@@ -24,6 +24,7 @@ Game init_game(Heuristic h);
 Game game_cpy(Game og);
 void game_free(Game g);
 
+Game test_move_norand(Game g, Move m);
 void make_move(Game g, Move m);
 Game test_move(Game g, Move m);
 void print_game(Game g);

@@ -16,6 +16,7 @@
 void human_game();
 
 int play2048(Game g);
+int play2048_noply(Game g);
 
 void test_suite(int argc, const char *argv[]);
 void test_minimax(Heuristic h, int *score, int *maxtile);

@@ -229,8 +229,19 @@ int main(int argc, const char * argv[]) {
 //    human_game();
 
 //    test_suite(argc, argv);
-    
-    play2048(init_game(sum_heuristic));
+    int total = 0;
+    int total2 = 0;
+    int times = 100;
+    for (int i = 0; i < times; i++) {
+        printf("%i\n", i);
+        Game g = init_game(weighted_sum2);
+        Game g2 = game_cpy(g);
+        total += play2048(g);
+        total2 += play2048_noply(g2);
+    }
+    printf("average: %d\n", (total/times));
+    printf("average: %d\n", (total2/times));
+        
 
 //    optimize_score(200);
 
