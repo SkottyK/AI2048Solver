@@ -18,6 +18,7 @@
 #include "heuristics.h"
 #include "move.h"
 #include "num_util.h"
+#include "optimization.h"
 
 
 void print_commands() {
@@ -403,10 +404,13 @@ void human_game() {
 }
 
 void test_random(int *score, int *maxtile) {
+    printf("Playing random...\n");
     Game g = init_game(squaresum_heuristic);
     PointList pl = open_spaces(g->board);
     while (!pl_empty(pl)) {
+        pl_free(pl);
         make_move(g, (Move)randint(4));
+        pl = open_spaces(g->board);
     }
     pl_free(pl);
     *score = g->score;
@@ -416,14 +420,18 @@ void test_random(int *score, int *maxtile) {
 
 void test_minimax(Heuristic h, int *score, int *maxtile) {
     Game g = init_game(h);
-    *score = play2048(g);
-    //*maxtile = max_tile(g->board);
+    if (score != NULL)
+        *score = play2048(g);
+    if (maxtile != NULL)
+        *maxtile = max_tile(g->board);
     game_free(g);
 }
 void test_expectation(Heuristic h, int depth, int *score, int *maxtile) {
     Game g= init_game(h);
-    *score = playExpected2048(g, depth);
-    //*maxtile = max_tile(g->board);
+    if (score != NULL)
+        *score = playExpected2048(g, depth);
+    if (maxtile != NULL)
+        *maxtile = max_tile(g->board);
     game_free(g);
 }
 
@@ -449,14 +457,15 @@ void test_suite(int argc, const char *argv[]) {
             }
         }
     }
-    const char *f_labels = "Squaresum,Empty Blocks,Sequential Weight,Weight RC";
+    const char *f_labels = "Squaresum,Empty Blocks,Sequential Weight,Weighted Row/Col,Optimized";
     Heuristic h_functions[] = {
         squaresum_heuristic,
         empty_blocks,
         weighted_sum1,
-        weighted_sum2
+        weighted_sum2,
+        optimized_heuristic
     };
-    int num_funcs = 4;
+    int num_funcs = 5;
     int scores[num_funcs+1][num_tests];
     int mtiles[num_funcs+1][num_tests];
 
