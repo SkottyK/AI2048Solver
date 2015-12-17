@@ -400,10 +400,13 @@ void human_game() {
 }
 
 void test_random(int *score, int *maxtile) {
+    printf("Playing random...\n");
     Game g = init_game(squaresum_heuristic);
     PointList pl = open_spaces(g->board);
     while (!pl_empty(pl)) {
+        pl_free(pl);
         make_move(g, (Move)randint(4));
+        pl = open_spaces(g->board);
     }
     pl_free(pl);
     *score = g->score;
