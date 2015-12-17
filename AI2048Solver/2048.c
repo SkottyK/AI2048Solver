@@ -182,9 +182,13 @@ double ply(list B, int d, Heuristic H) {
         pl_free(pl);
         node = node->next;
     }
-    double retVal = ply(B2, d-1, H);
+    double retval = ply(B2, d-1, H);
+    while (d > 1 && retval == 0) {
+        d = d-1;
+        retval = ply(B2, d-1, H);
+    }
     list_destroy(&B2);
-    return retVal;
+    return retval;
 }
 
 

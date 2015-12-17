@@ -231,16 +231,30 @@ int main(int argc, const char * argv[]) {
 //    test_suite(argc, argv);
     int total = 0;
     int total2 = 0;
-    int times = 100;
-    for (int i = 0; i < times; i++) {
-        printf("%i\n", i);
-        Game g = init_game(weighted_sum2);
-        Game g2 = game_cpy(g);
-        total += play2048(g);
-        total2 += play2048_noply(g2);
+    int times = 500;
+    //const char *f_labels = "Squaresum,Empty Blocks,Sequential Weight,Weight RC";
+    Heuristic h_functions[] = {
+        squaresum_heuristic,
+        empty_blocks,
+        weighted_sum1,
+        weighted_sum2
+    };
+    int num_funcs = 4;
+    for (int j = 0; j < num_funcs; j++) {
+        total = 0;
+        total2 = 0;
+        for (int i = 0; i < times; i++) {
+            Game g = init_game(h_functions[j]);
+            Game g2 = game_cpy(g);
+            total += play2048(g);
+            total2 += play2048_noply(g2);
+            //printf("average after %i: %d\n", i+1, (total/(i+1)));
+            //printf("average after %i: %d\n", i+1, (total2/(i+1)));
+        }
+        printf("average for %i 2ply: %d\n", j, (total/times));
+        printf("average for %i 1ply: %d\n", j, (total2/times));
     }
-    printf("average: %d\n", (total/times));
-    printf("average: %d\n", (total2/times));
+    
         
 
 //    optimize_score(200);
