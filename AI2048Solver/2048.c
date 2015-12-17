@@ -18,6 +18,7 @@
 #include "heuristics.h"
 #include "move.h"
 #include "num_util.h"
+#include "optimization.h"
 
 
 void print_commands() {
@@ -449,14 +450,15 @@ void test_suite(int argc, const char *argv[]) {
             }
         }
     }
-    const char *f_labels = "Squaresum,Empty Blocks,Sequential Weight,Weight RC";
+    const char *f_labels = "Squaresum,Empty Blocks,Sequential Weight,Weighted Row/Col,Optimized";
     Heuristic h_functions[] = {
         squaresum_heuristic,
         empty_blocks,
         weighted_sum1,
-        weighted_sum2
+        weighted_sum2,
+        optimized_heuristic
     };
-    int num_funcs = 4;
+    int num_funcs = 5;
     int scores[num_funcs+1][num_tests];
     int mtiles[num_funcs+1][num_tests];
 

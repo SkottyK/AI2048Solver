@@ -19,6 +19,23 @@ typedef struct custom_data {
     int num_iterations;
 } custom_data;
 
+double weights_heuristic(Board b, int weights[DIM]) {
+    double dot = 0, sum = 0;
+    for (int r=0; r<BOARDSIZE; r++) {
+        for (int c=0; c<BOARDSIZE; c++) {
+            double this = (double)bget(b, r, c);
+            sum += (this * this);
+            dot += this * weights[r * BOARDSIZE + c];
+        }
+    }
+    return (sum/2) + (dot/2);
+}
+
+double opt[DIM] = {30.50, 36.75, 43.25, 50.50, 28.50, 42.25, 41.25, 50.25, 35.25, 44.25, 44.00, 49.25, 28.25, 29.00, 33.25, 36.25};
+// [ 27.50 27.75 33.75 42.00 20.75 29.75 33.25 41.75 23.75 32.75 35.00 39.25 21.25 25.25 26.00 30.25]
+double optimized_heuristic(Board b) {
+    return weights_heuristic(b, (int *)opt);
+}
 
 double theta[DIM];
 int runs = 0;
@@ -33,6 +50,10 @@ double theta_weight(Board b) {
     return sum;
 }
 
+double theta_weight2(Board b) {
+    return weights_heuristic(b, (int *)theta);
+}
+
 
 double average_score(unsigned n, const double *theta, double *grad, void* f_data) {
     custom_data *data = (custom_data *)f_data;
@@ -41,7 +62,7 @@ double average_score(unsigned n, const double *theta, double *grad, void* f_data
     int score;
 
     for (int i = 0; i < data->num_iterations; i++) {
-        test_minimax(&theta_weight, &score, NULL);
+        test_minimax(&theta_weight2, &score, NULL);
         average += (double)score * multiplier;
     }
 
@@ -106,7 +127,7 @@ opt_data *stoch_opt(int num_iterations, int num_avg) {
                 best_test = tests[ti];
             }
         }
-        *param = (best_test + *param) / 2;
+        *param = (best_test + (tests[1])) / 2;
         average = best_average;
 
         if (testcount % (DIM * r_per_s) == 0 && testcount != 0) {
